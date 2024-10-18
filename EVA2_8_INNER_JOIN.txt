@@ -1,0 +1,2770 @@
+MySQL Shell 8.0.38
+
+Copyright (c) 2016, 2024, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \SQL
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8
+Server version: 8.0.39 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| empresa            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| tbd_e1             |
+| tbd_e2             |
+| world              |
++--------------------+
+9 rows in set (0.0196 sec)
+ MySQL  localhost:3306 ssl  SQL > use sakila;
+Default schema set to `sakila`.
+Fetching global names, object names from `sakila` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  sakila  SQL > desc payment
+                                       -> ;
++--------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field        | Type              | Null | Key | Default           | Extra                                         |
++--------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| payment_id   | smallint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| customer_id  | smallint unsigned | NO   | MUL | NULL              |                                               |
+| staff_id     | tinyint unsigned  | NO   | MUL | NULL              |                                               |
+| rental_id    | int               | YES  | MUL | NULL              |                                               |
+| amount       | decimal(5,2)      | NO   |     | NULL              |                                               |
+| payment_date | datetime          | NO   |     | NULL              |                                               |
+| last_update  | timestamp         | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++--------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+7 rows in set (0.0248 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc customer;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| customer_id | smallint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| store_id    | tinyint unsigned  | NO   | MUL | NULL              |                                               |
+| first_name  | varchar(45)       | NO   |     | NULL              |                                               |
+| last_name   | varchar(45)       | NO   | MUL | NULL              |                                               |
+| email       | varchar(50)       | YES  |     | NULL              |                                               |
+| address_id  | smallint unsigned | NO   | MUL | NULL              |                                               |
+| active      | tinyint(1)        | NO   |     | 1                 |                                               |
+| create_date | datetime          | NO   |     | NULL              |                                               |
+| last_update | timestamp         | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+9 rows in set (0.0127 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > SELECT a.customer_id, a.first_name, a.last_name, b.amount
+                                       -> FROM customer a
+                                       -> INNER JOIN payment b
+                                       -> on a.customer_id = b.customer_id
+                                       -> limit 50;
++-------------+------------+-----------+--------+
+| customer_id | first_name | last_name | amount |
++-------------+------------+-----------+--------+
+|           1 | MARY       | SMITH     |   2.99 |
+|           1 | MARY       | SMITH     |   0.99 |
+|           1 | MARY       | SMITH     |   5.99 |
+|           1 | MARY       | SMITH     |   0.99 |
+|           1 | MARY       | SMITH     |   9.99 |
+|           1 | MARY       | SMITH     |   4.99 |
+|           1 | MARY       | SMITH     |   4.99 |
+|           1 | MARY       | SMITH     |   0.99 |
+|           1 | MARY       | SMITH     |   3.99 |
+|           1 | MARY       | SMITH     |   5.99 |
+|           1 | MARY       | SMITH     |   5.99 |
+|           1 | MARY       | SMITH     |   4.99 |
+|           1 | MARY       | SMITH     |   4.99 |
+|           1 | MARY       | SMITH     |   7.99 |
+|           1 | MARY       | SMITH     |   2.99 |
+|           1 | MARY       | SMITH     |   4.99 |
+|           1 | MARY       | SMITH     |   4.99 |
+|           1 | MARY       | SMITH     |   0.99 |
+|           1 | MARY       | SMITH     |   0.99 |
+|           1 | MARY       | SMITH     |   2.99 |
+|           1 | MARY       | SMITH     |   2.99 |
+|           1 | MARY       | SMITH     |   4.99 |
+|           1 | MARY       | SMITH     |   3.99 |
+|           1 | MARY       | SMITH     |   0.99 |
+|           1 | MARY       | SMITH     |   4.99 |
+|           1 | MARY       | SMITH     |   0.99 |
+|           1 | MARY       | SMITH     |   0.99 |
+|           1 | MARY       | SMITH     |   2.99 |
+|           1 | MARY       | SMITH     |   0.99 |
+|           1 | MARY       | SMITH     |   1.99 |
+|           1 | MARY       | SMITH     |   2.99 |
+|           1 | MARY       | SMITH     |   5.99 |
+|           2 | PATRICIA   | JOHNSON   |   4.99 |
+|           2 | PATRICIA   | JOHNSON   |   2.99 |
+|           2 | PATRICIA   | JOHNSON   |   2.99 |
+|           2 | PATRICIA   | JOHNSON   |   6.99 |
+|           2 | PATRICIA   | JOHNSON   |   4.99 |
+|           2 | PATRICIA   | JOHNSON   |   5.99 |
+|           2 | PATRICIA   | JOHNSON   |   5.99 |
+|           2 | PATRICIA   | JOHNSON   |   5.99 |
+|           2 | PATRICIA   | JOHNSON   |   2.99 |
+|           2 | PATRICIA   | JOHNSON   |   5.99 |
+|           2 | PATRICIA   | JOHNSON   |   4.99 |
+|           2 | PATRICIA   | JOHNSON   |  10.99 |
+|           2 | PATRICIA   | JOHNSON   |   0.99 |
+|           2 | PATRICIA   | JOHNSON   |   6.99 |
+|           2 | PATRICIA   | JOHNSON   |   6.99 |
+|           2 | PATRICIA   | JOHNSON   |   2.99 |
+|           2 | PATRICIA   | JOHNSON   |   0.99 |
+|           2 | PATRICIA   | JOHNSON   |   0.99 |
++-------------+------------+-----------+--------+
+50 rows in set (0.1807 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > SELECT sum(amount) FROM payment
+                                       -> WHERE customer_id = 1;
++-------------+
+| sum(amount) |
++-------------+
+|      118.68 |
++-------------+
+1 row in set (0.0193 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > SELECT a.first_name, a.last_name,
+                                       -> sum(b.amount) as total
+                                       -> FROM customer a
+                                       -> INNER JOIN payment b
+                                       -> on a.customer_id = b.customer_id
+                                       -> GROUP BY a.customer_id;
++-------------+--------------+--------+
+| first_name  | last_name    | total  |
++-------------+--------------+--------+
+| MARY        | SMITH        | 118.68 |
+| PATRICIA    | JOHNSON      | 128.73 |
+| LINDA       | WILLIAMS     | 135.74 |
+| BARBARA     | JONES        |  81.78 |
+| ELIZABETH   | BROWN        | 144.62 |
+| JENNIFER    | DAVIS        |  93.72 |
+| MARIA       | MILLER       | 151.67 |
+| SUSAN       | WILSON       |  92.76 |
+| MARGARET    | MOORE        |  89.77 |
+| DOROTHY     | TAYLOR       |  99.75 |
+| LISA        | ANDERSON     | 106.76 |
+| NANCY       | THOMAS       | 103.72 |
+| KAREN       | JACKSON      | 131.73 |
+| BETTY       | WHITE        | 117.72 |
+| HELEN       | HARRIS       | 134.68 |
+| SANDRA      | MARTIN       | 118.72 |
+| DONNA       | THOMPSON     |  98.79 |
+| CAROL       | GARCIA       |  91.78 |
+| RUTH        | MARTINEZ     | 125.76 |
+| SHARON      | ROBINSON     | 115.70 |
+| MICHELLE    | CLARK        | 155.65 |
+| LAURA       | RODRIGUEZ    | 113.78 |
+| SARAH       | LEWIS        | 119.70 |
+| KIMBERLY    | LEE          |  95.75 |
+| DEBORAH     | WALKER       | 115.71 |
+| JESSICA     | HALL         | 152.66 |
+| SHIRLEY     | ALLEN        | 126.69 |
+| CYNTHIA     | YOUNG        | 111.68 |
+| ANGELA      | HERNANDEZ    | 140.64 |
+| MELISSA     | KING         | 123.66 |
+| BRENDA      | WRIGHT       | 104.74 |
+| AMY         | LOPEZ        | 127.71 |
+| ANNA        | HILL         |  91.79 |
+| REBECCA     | SCOTT        |  89.76 |
+| VIRGINIA    | GREEN        | 129.68 |
+| KATHLEEN    | ADAMS        |  92.73 |
+| PAMELA      | BAKER        |  95.77 |
+| MARTHA      | GONZALEZ     | 127.66 |
+| DEBRA       | NELSON       | 141.71 |
+| AMANDA      | CARTER       | 110.73 |
+| STEPHANIE   | MITCHELL     | 118.75 |
+| CAROLYN     | PEREZ        | 117.70 |
+| CHRISTINE   | ROBERTS      |  99.76 |
+| MARIE       | TURNER       | 114.74 |
+| JANET       | PHILLIPS     | 127.73 |
+| CATHERINE   | CAMPBELL     | 142.66 |
+| FRANCES     | PARKER       | 108.78 |
+| ANN         | EVANS        |  76.83 |
+| JOYCE       | EDWARDS      | 130.72 |
+| DIANE       | COLLINS      | 169.65 |
+| ALICE       | STEWART      | 138.67 |
+| JULIE       | SANCHEZ      | 107.71 |
+| HEATHER     | MORRIS       | 115.70 |
+| TERESA      | ROGERS       | 128.71 |
+| DORIS       | REED         | 100.78 |
+| GLORIA      | COOK         | 135.70 |
+| EVELYN      | MORGAN       | 114.72 |
+| JEAN        | BELL         | 115.73 |
+| CHERYL      | MURPHY       | 133.73 |
+| MILDRED     | BAILEY       |  98.75 |
+| KATHERINE   | RIVERA       |  58.86 |
+| JOAN        | COOPER       |  84.77 |
+| ASHLEY      | RICHARDSON   | 112.75 |
+| JUDITH      | COX          | 100.67 |
+| ROSE        | HOWARD       | 103.78 |
+| JANICE      | WARD         | 144.66 |
+| KELLY       | TORRES       |  99.78 |
+| NICOLE      | PETERSON     |  94.78 |
+| JUDY        | GRAY         |  96.75 |
+| CHRISTINA   | RAMIREZ      |  80.82 |
+| KATHY       | JAMES        | 129.70 |
+| THERESA     | WATSON       |  99.70 |
+| BEVERLY     | BROOKS       |  97.76 |
+| DENISE      | KELLY        | 103.73 |
+| TAMMY       | SANDERS      | 155.59 |
+| IRENE       | PRICE        |  77.77 |
+| JANE        | BENNETT      | 100.72 |
+| LORI        | WOOD         | 141.69 |
+| RACHEL      | BARNES       |  84.78 |
+| MARILYN     | ROSS         | 137.70 |
+| ANDREA      | HENDERSON    |  93.78 |
+| KATHRYN     | COLEMAN      | 130.74 |
+| LOUISE      | JENKINS      | 101.75 |
+| SARA        | PERRY        | 141.67 |
+| ANNE        | POWELL       |  87.77 |
+| JACQUELINE  | LONG         | 148.67 |
+| WANDA       | PATTERSON    | 145.70 |
+| BONNIE      | HUGHES       |  87.79 |
+| JULIA       | FLORES       | 134.68 |
+| RUBY        | WASHINGTON   | 110.72 |
+| LOIS        | BUTLER       | 113.65 |
+| TINA        | SIMMONS      | 133.72 |
+| PHYLLIS     | FOSTER       |  91.77 |
+| NORMA       | GONZALES     |  79.79 |
+| PAULA       | BRYANT       |  77.82 |
+| DIANA       | ALEXANDER    | 105.73 |
+| ANNIE       | RUSSELL      |  58.82 |
+| LILLIAN     | GRIFFIN      | 106.75 |
+| EMILY       | DIAZ         |  91.76 |
+| ROBIN       | HAYES        | 102.76 |
+| PEGGY       | MYERS        |  96.76 |
+| CRYSTAL     | FORD         | 137.67 |
+| GLADYS      | HAMILTON     | 146.69 |
+| RITA        | GRAHAM       |  92.76 |
+| DAWN        | SULLIVAN     | 120.74 |
+| CONNIE      | WALLACE      | 100.77 |
+| FLORENCE    | WOODS        | 126.70 |
+| TRACY       | COLE         | 132.70 |
+| EDNA        | WEST         | 107.74 |
+| TIFFANY     | JORDAN       |  59.86 |
+| CARMEN      | OWENS        |  97.74 |
+| ROSA        | REYNOLDS     | 133.70 |
+| CINDY       | FISHER       | 113.71 |
+| GRACE       | ELLIS        | 139.67 |
+| WENDY       | HARRISON     |  91.70 |
+| VICTORIA    | GIBSON       | 111.73 |
+| EDITH       | MCDONALD     |  71.81 |
+| KIM         | CRUZ         |  82.79 |
+| SHERRY      | MARSHALL     | 153.66 |
+| SYLVIA      | ORTIZ        | 143.68 |
+| JOSEPHINE   | GOMEZ        | 109.74 |
+| THELMA      | MURRAY       | 126.68 |
+| SHANNON     | FREEMAN      | 100.76 |
+| SHEILA      | WELLS        |  73.82 |
+| ETHEL       | WEBB         | 135.68 |
+| ELLEN       | SIMPSON      | 117.72 |
+| ELAINE      | STEVENS      | 107.76 |
+| MARJORIE    | TUCKER       | 127.68 |
+| CARRIE      | PORTER       | 124.66 |
+| CHARLOTTE   | HUNTER       |  93.76 |
+| MONICA      | HICKS        | 128.70 |
+| ESTHER      | CRAWFORD     |  95.72 |
+| PAULINE     | HENRY        |  98.73 |
+| EMMA        | BOYD         |  94.77 |
+| JUANITA     | MASON        | 110.70 |
+| ANITA       | MORALES      |  62.85 |
+| RHONDA      | KENNEDY      | 194.61 |
+| HAZEL       | WARREN       | 110.66 |
+| AMBER       | DIXON        | 113.73 |
+| EVA         | RAMOS        |  83.82 |
+| DEBBIE      | REYES        | 130.68 |
+| APRIL       | BURNS        |  94.74 |
+| LESLIE      | GORDON       |  89.78 |
+| CLARA       | SHAW         | 195.58 |
+| LUCILLE     | HOLMES       | 108.72 |
+| JAMIE       | RICE         | 139.71 |
+| JOANNE      | ROBERTSON    | 127.66 |
+| ELEANOR     | HUNT         | 216.54 |
+| VALERIE     | BLACK        | 121.74 |
+| DANIELLE    | DANIELS      | 105.75 |
+| MEGAN       | PALMER       |  92.73 |
+| ALICIA      | MILLS        |  83.79 |
+| SUZANNE     | NICHOLS      |  94.76 |
+| MICHELE     | GRANT        | 130.70 |
+| GAIL        | KNIGHT       | 109.75 |
+| BERTHA      | FERGUSON     | 101.75 |
+| DARLENE     | ROSE         | 113.69 |
+| VERONICA    | STONE        | 126.68 |
+| JILL        | HAWKINS      |  68.79 |
+| ERIN        | DUNN         | 106.73 |
+| GERALDINE   | PERKINS      | 112.70 |
+| LAUREN      | HUDSON       |  71.80 |
+| CATHY       | SPENCER      | 122.71 |
+| JOANN       | GARDNER      |  66.84 |
+| LORRAINE    | STEPHENS     |  86.79 |
+| LYNN        | PAYNE        | 123.72 |
+| SALLY       | PIERCE       | 119.68 |
+| REGINA      | BERRY        | 135.66 |
+| ERICA       | MATTHEWS     |  95.78 |
+| BEATRICE    | ARNOLD       | 119.74 |
+| DOLORES     | WAGNER       | 114.74 |
+| BERNICE     | WILLIS       | 145.67 |
+| AUDREY      | RAY          | 119.71 |
+| YVONNE      | WATKINS      |  92.79 |
+| ANNETTE     | OLSON        |  98.76 |
+| JUNE        | CARROLL      | 173.63 |
+| SAMANTHA    | DUNCAN       |  71.77 |
+| MARION      | SNYDER       | 194.61 |
+| DANA        | HART         | 133.71 |
+| STACY       | CUNNINGHAM   |  98.77 |
+| ANA         | BRADLEY      | 174.66 |
+| RENEE       | LANE         |  97.74 |
+| IDA         | ANDREWS      |  76.77 |
+| VIVIAN      | RUIZ         |  90.77 |
+| ROBERTA     | HARPER       |  84.77 |
+| HOLLY       | FOX          | 114.69 |
+| BRITTANY    | RILEY        | 159.72 |
+| MELANIE     | ARMSTRONG    |  92.75 |
+| LORETTA     | CARPENTER    |  93.78 |
+| YOLANDA     | WEAVER       | 110.73 |
+| JEANETTE    | GREENE       |  74.80 |
+| LAURIE      | LAWRENCE     |  99.77 |
+| KATIE       | ELLIOTT      | 109.75 |
+| KRISTEN     | CHAVEZ       |  87.82 |
+| VANESSA     | SIMS         |  86.81 |
+| ALMA        | AUSTIN       | 151.65 |
+| SUE         | PETERS       | 154.60 |
+| ELSIE       | KELLEY       | 141.63 |
+| BETH        | FRANKLIN     | 103.75 |
+| JEANNE      | LAWSON       | 136.73 |
+| VICKI       | FIELDS       | 108.75 |
+| CARLA       | GUTIERREZ    | 103.74 |
+| TARA        | RYAN         |  88.80 |
+| ROSEMARY    | SCHMIDT      | 147.65 |
+| EILEEN      | CARR         |  80.82 |
+| TERRI       | VASQUEZ      | 126.73 |
+| GERTRUDE    | CASTILLO     | 137.66 |
+| LUCY        | WHEELER      |  91.74 |
+| TONYA       | CHAPMAN      | 161.68 |
+| ELLA        | OLIVER       | 137.69 |
+| STACEY      | MONTGOMERY   | 151.66 |
+| WILMA       | RICHARDS     |  91.80 |
+| GINA        | WILLIAMSON   | 111.72 |
+| KRISTIN     | JOHNSTON     | 116.69 |
+| JESSIE      | BANKS        |  91.74 |
+| NATALIE     | MEYER        |  95.77 |
+| AGNES       | BISHOP       |  98.77 |
+| VERA        | MCCOY        |  67.82 |
+| WILLIE      | HOWELL       | 101.74 |
+| CHARLENE    | ALVAREZ      | 114.73 |
+| BESSIE      | MORRISON     | 132.72 |
+| DELORES     | HANSEN       |  91.79 |
+| MELINDA     | FERNANDEZ    |  80.83 |
+| PEARL       | GARZA        |  76.78 |
+| ARLENE      | HARVEY       | 120.74 |
+| MAUREEN     | LITTLE       |  87.79 |
+| COLLEEN     | BURTON       |  87.76 |
+| ALLISON     | STANLEY      |  92.73 |
+| TAMARA      | NGUYEN       |  93.75 |
+| JOY         | GEORGE       | 124.67 |
+| GEORGIA     | JACOBS       | 110.74 |
+| CONSTANCE   | REID         |  95.75 |
+| LILLIE      | KIM          |  89.77 |
+| CLAUDIA     | FULLER       | 111.74 |
+| JACKIE      | LYNCH        |  93.75 |
+| MARCIA      | DEAN         | 175.58 |
+| TANYA       | GILBERT      | 144.67 |
+| NELLIE      | GARRETT      |  94.79 |
+| MINNIE      | ROMERO       | 142.66 |
+| MARLENE     | WELCH        | 117.74 |
+| HEIDI       | LARSON       | 122.66 |
+| GLENDA      | FRAZIER      | 140.68 |
+| LYDIA       | BURKE        |  82.76 |
+| VIOLA       | HANSON       | 129.68 |
+| COURTNEY    | DAY          | 132.68 |
+| MARIAN      | MENDOZA      | 107.77 |
+| STELLA      | MORENO       | 104.78 |
+| CAROLINE    | BOWMAN       |  50.85 |
+| DORA        | MEDINA       | 107.77 |
+| JO          | FOWLER       |  73.80 |
+| VICKIE      | BREWER       | 120.69 |
+| MATTIE      | HOFFMAN      |  64.78 |
+| TERRY       | CARLSON      | 127.71 |
+| MAXINE      | SILVA        | 116.68 |
+| IRMA        | PEARSON      |  70.82 |
+| MABEL       | HOLLAND      | 112.70 |
+| MARSHA      | DOUGLAS      | 151.63 |
+| MYRTLE      | FLEMING      | 110.76 |
+| LENA        | JENSEN       | 168.68 |
+| CHRISTY     | VARGAS       | 122.69 |
+| DEANNA      | BYRD         | 107.74 |
+| PATSY       | DAVIDSON     | 119.72 |
+| HILDA       | HOPKINS      | 122.71 |
+| GWENDOLYN   | MAY          |  98.75 |
+| JENNIE      | TERRY        | 133.71 |
+| NORA        | HERRERA      | 118.72 |
+| MARGIE      | WADE         | 159.64 |
+| NINA        | SOTO         | 123.71 |
+| CASSANDRA   | WALTERS      | 129.70 |
+| LEAH        | CURTIS       | 104.75 |
+| PENNY       | NEAL         |  68.82 |
+| KAY         | CALDWELL     |  98.80 |
+| PRISCILLA   | LOWE         | 157.65 |
+| NAOMI       | JENNINGS     | 152.65 |
+| CAROLE      | BARNETT      | 108.70 |
+| BRANDY      | GRAVES       | 122.72 |
+| OLGA        | JIMENEZ      | 144.68 |
+| BILLIE      | HORTON       |  88.74 |
+| DIANNE      | SHELTON      | 135.69 |
+| TRACEY      | BARRETT      | 118.73 |
+| LEONA       | OBRIEN       |  50.86 |
+| JENNY       | CASTRO       | 103.73 |
+| FELICIA     | SUTTON       |  86.72 |
+| SONIA       | GREGORY      | 126.72 |
+| MIRIAM      | MCKINNEY     | 135.74 |
+| VELMA       | LUCAS        | 117.73 |
+| BECKY       | MILES        | 115.71 |
+| BOBBIE      | CRAIG        |  80.76 |
+| VIOLET      | RODRIQUEZ    | 142.70 |
+| KRISTINA    | CHAMBERS     | 109.72 |
+| TONI        | HOLT         |  95.77 |
+| MISTY       | LAMBERT      | 118.73 |
+| MAE         | FLETCHER     | 158.69 |
+| SHELLY      | WATTS        | 113.74 |
+| DAISY       | BATES        | 162.62 |
+| RAMONA      | HALE         | 129.70 |
+| SHERRI      | RHODES       | 128.67 |
+| ERIKA       | PENA         | 101.74 |
+| JAMES       | GANNON       | 131.70 |
+| JOHN        | FARNSWORTH   | 137.69 |
+| ROBERT      | BAUGHMAN     |  92.79 |
+| MICHAEL     | SILVERMAN    | 127.71 |
+| WILLIAM     | SATTERFIELD  | 100.74 |
+| DAVID       | ROYAL        | 115.74 |
+| RICHARD     | MCCRARY      | 109.75 |
+| CHARLES     | KOWALSKI     | 138.68 |
+| JOSEPH      | JOY          | 134.70 |
+| THOMAS      | GRIGSBY      | 105.75 |
+| CHRISTOPHER | GRECO        | 147.69 |
+| DANIEL      | CABRAL       |  97.80 |
+| PAUL        | TROUT        | 120.77 |
+| MARK        | RINEHART     | 104.74 |
+| DONALD      | MAHON        |  89.77 |
+| GEORGE      | LINTON       | 131.67 |
+| KENNETH     | GOODEN       |  84.83 |
+| STEVEN      | CURLEY       | 132.71 |
+| EDWARD      | BAUGH        | 114.72 |
+| BRIAN       | WYMAN        |  52.88 |
+| RONALD      | WEINER       | 132.70 |
+| ANTHONY     | SCHWAB       |  71.80 |
+| KEVIN       | SCHULER      | 116.78 |
+| JASON       | MORRISSEY    | 128.72 |
+| MATTHEW     | MAHAN        | 114.69 |
+| GARY        | COY          | 103.75 |
+| TIMOTHY     | BUNN         |  91.78 |
+| JOSE        | ANDREW       |  96.75 |
+| LARRY       | THRASHER     | 112.74 |
+| JEFFREY     | SPEAR        |  90.77 |
+| FRANK       | WAGGONER     | 127.68 |
+| SCOTT       | SHELLEY      |  94.75 |
+| ERIC        | ROBERT       | 122.73 |
+| STEPHEN     | QUALLS       | 118.72 |
+| ANDREW      | PURDY        | 109.73 |
+| RAYMOND     | MCWHORTER    | 135.70 |
+| GREGORY     | MAULDIN      |  78.77 |
+| JOSHUA      | MARK         | 119.70 |
+| JERRY       | JORDON       | 143.71 |
+| DENNIS      | GILMAN       | 114.72 |
+| WALTER      | PERRYMAN     | 127.70 |
+| PATRICK     | NEWSOM       | 119.69 |
+| PETER       | MENARD       | 106.77 |
+| HAROLD      | MARTINO      | 130.68 |
+| DOUGLAS     | GRAF         | 114.75 |
+| HENRY       | BILLINGSLEY  |  73.82 |
+| CARL        | ARTIS        | 106.77 |
+| ARTHUR      | SIMPKINS     | 155.68 |
+| RYAN        | SALISBURY    | 142.70 |
+| ROGER       | QUINTANILLA  | 146.64 |
+| JOE         | GILLILAND    | 138.71 |
+| JUAN        | FRALEY       |  73.77 |
+| JACK        | FOUST        |  89.76 |
+| ALBERT      | CROUSE       |  99.77 |
+| JONATHAN    | SCARBOROUGH  |  72.82 |
+| JUSTIN      | NGO          | 129.64 |
+| TERRY       | GRISSOM      |  72.80 |
+| GERALD      | FULTZ        | 121.70 |
+| KEITH       | RICO         |  89.74 |
+| SAMUEL      | MARLOW       |  80.79 |
+| WILLIE      | MARKHAM      | 101.75 |
+| RALPH       | MADRIGAL     | 150.66 |
+| LAWRENCE    | LAWTON       | 100.69 |
+| NICHOLAS    | BARFIELD     | 145.68 |
+| ROY         | WHITING      | 143.71 |
+| BENJAMIN    | VARNEY       |  95.77 |
+| BRUCE       | SCHWARZ      | 103.77 |
+| BRANDON     | HUEY         | 152.63 |
+| ADAM        | GOOCH        | 101.78 |
+| HARRY       | ARCE         | 157.65 |
+| FRED        | WHEAT        |  88.75 |
+| WAYNE       | TRUONG       |  70.81 |
+| BILLY       | POULIN       | 149.65 |
+| STEVE       | MACKENZIE    | 158.66 |
+| LOUIS       | LEONE        | 161.65 |
+| JEREMY      | HURTADO      | 103.72 |
+| AARON       | SELBY        | 110.76 |
+| RANDY       | GAITHER      | 110.72 |
+| HOWARD      | FORTNER      |  93.74 |
+| EUGENE      | CULPEPPER    |  71.81 |
+| CARLOS      | COUGHLIN     | 106.77 |
+| RUSSELL     | BRINSON      | 136.64 |
+| BOBBY       | BOUDREAU     | 106.65 |
+| VICTOR      | BARKLEY      |  91.76 |
+| MARTIN      | BALES        | 103.73 |
+| ERNEST      | STEPP        |  89.75 |
+| PHILLIP     | HOLM         | 101.74 |
+| TODD        | TAN          | 117.71 |
+| JESSE       | SCHILLING    | 101.74 |
+| CRAIG       | MORRELL      | 124.70 |
+| ALAN        | KAHN         | 124.74 |
+| SHAWN       | HEATON       | 152.67 |
+| CLARENCE    | GAMEZ        | 104.70 |
+| SEAN        | DOUGLASS     |  91.77 |
+| PHILIP      | CAUSEY       | 121.69 |
+| CHRIS       | BROTHERS     |  84.78 |
+| JOHNNY      | TURPIN       |  57.81 |
+| EARL        | SHANKS       | 111.73 |
+| JIMMY       | SCHRADER     | 105.71 |
+| ANTONIO     | MEEK         |  78.84 |
+| DANNY       | ISOM         |  91.79 |
+| BRYAN       | HARDISON     | 124.72 |
+| TONY        | CARRANZA     |  73.79 |
+| LUIS        | YANEZ        |  79.80 |
+| MIKE        | WAY          | 166.65 |
+| STANLEY     | SCROGGINS    | 139.70 |
+| LEONARD     | SCHOFIELD    | 109.68 |
+| NATHAN      | RUNYON       | 122.68 |
+| DALE        | RATCLIFF     | 112.73 |
+| MANUEL      | MURRELL      | 116.70 |
+| RODNEY      | MOELLER      | 104.77 |
+| CURTIS      | IRBY         | 167.62 |
+| NORMAN      | CURRIER      |  80.74 |
+| ALLEN       | BUTTERFIELD  |  85.79 |
+| MARVIN      | YEE          |  75.79 |
+| VINCENT     | RALSTON      | 105.75 |
+| GLENN       | PULLEN       |  93.77 |
+| JEFFERY     | PINSON       | 121.69 |
+| TRAVIS      | ESTEP        | 110.75 |
+| JEFF        | EAST         | 107.70 |
+| CHAD        | CARBONE      |  89.75 |
+| JACOB       | LANCE        |  79.79 |
+| LEE         | HAWKS        | 119.73 |
+| MELVIN      | ELLINGTON    |  97.74 |
+| ALFRED      | CASILLAS     | 120.74 |
+| KYLE        | SPURLOCK     | 110.70 |
+| FRANCIS     | SIKES        | 104.74 |
+| BRADLEY     | MOTLEY       | 126.73 |
+| JESUS       | MCCARTNEY    | 114.76 |
+| HERBERT     | KRUGER       |  78.80 |
+| FREDERICK   | ISBELL       | 105.79 |
+| RAY         | HOULE        |  79.78 |
+| JOEL        | FRANCISCO    |  95.77 |
+| EDWIN       | BURK         | 116.77 |
+| DON         | BONE         | 133.75 |
+| EDDIE       | TOMLIN       | 128.73 |
+| RICKY       | SHELBY       |  91.75 |
+| TROY        | QUIGLEY      | 144.70 |
+| RANDALL     | NEUMANN      |  99.77 |
+| BARRY       | LOVELACE     | 134.67 |
+| ALEXANDER   | FENNELL      | 151.64 |
+| BERNARD     | COLBY        |  88.78 |
+| MARIO       | CHEATHAM     | 112.72 |
+| LEROY       | BUSTAMANTE   | 118.68 |
+| FRANCISCO   | SKIDMORE     |  98.78 |
+| MARCUS      | HIDALGO      | 115.70 |
+| MICHEAL     | FORMAN       | 102.74 |
+| THEODORE    | CULP         | 116.69 |
+| CLIFFORD    | BOWENS       | 113.71 |
+| MIGUEL      | BETANCOURT   | 135.71 |
+| OSCAR       | AQUINO       |  99.80 |
+| JAY         | ROBB         |  89.74 |
+| JIM         | REA          | 128.67 |
+| TOM         | MILNER       | 107.68 |
+| CALVIN      | MARTEL       | 111.77 |
+| ALEX        | GRESHAM      | 151.67 |
+| JON         | WILES        |  87.76 |
+| RONNIE      | RICKETTS     | 100.75 |
+| BILL        | GAVIN        | 114.72 |
+| LLOYD       | DOWD         |  66.81 |
+| TOMMY       | COLLAZO      | 186.62 |
+| LEON        | BOSTIC       | 109.75 |
+| DEREK       | BLAKELY      |  97.72 |
+| WARREN      | SHERROD      | 159.67 |
+| DARRELL     | POWER        |  91.75 |
+| JEROME      | KENYON       |  73.84 |
+| FLOYD       | GANDY        |  69.83 |
+| LEO         | EBERT        | 104.77 |
+| ALVIN       | DELOACH      | 139.71 |
+| TIM         | CARY         | 175.61 |
+| WESLEY      | BULL         | 177.60 |
+| GORDON      | ALLARD       | 160.68 |
+| DEAN        | SAUER        | 109.73 |
+| GREG        | ROBINS       | 141.70 |
+| JORGE       | OLIVARES     | 134.66 |
+| DUSTIN      | GILLETTE     | 100.74 |
+| PEDRO       | CHESTNUT     | 103.76 |
+| DERRICK     | BOURQUE      |  95.78 |
+| DAN         | PAINE        | 109.78 |
+| LEWIS       | LYMAN        |  86.81 |
+| ZACHARY     | HITE         | 146.69 |
+| COREY       | HAUSER       | 101.78 |
+| HERMAN      | DEVORE       | 115.71 |
+| MAURICE     | CRAWLEY      | 138.71 |
+| VERNON      | CHAPA        |  88.82 |
+| ROBERTO     | VU           | 139.70 |
+| CLYDE       | TOBIAS       | 115.71 |
+| GLEN        | TALBERT      | 113.74 |
+| HECTOR      | POINDEXTER   | 119.74 |
+| SHANE       | MILLARD      |  95.78 |
+| RICARDO     | MEADOR       |  99.79 |
+| SAM         | MCDUFFIE     | 117.76 |
+| RICK        | MATTOX       | 124.73 |
+| LESTER      | KRAUS        |  65.84 |
+| BRENT       | HARKINS      | 112.77 |
+| RAMON       | CHOATE       | 140.69 |
+| CHARLIE     | BESS         | 120.74 |
+| TYLER       | WREN         |  88.79 |
+| GILBERT     | SLEDGE       | 129.72 |
+| GENE        | SANBORN      |  97.73 |
+| MARC        | OUTLAW       | 123.70 |
+| REGINALD    | KINDER       | 115.72 |
+| RUBEN       | GEARY        |  89.79 |
+| BRETT       | CORNWELL     | 138.66 |
+| ANGEL       | BARCLAY      | 115.68 |
+| NATHANIEL   | ADAM         | 133.72 |
+| RAFAEL      | ABNEY        |  97.79 |
+| LESLIE      | SEWARD       | 152.65 |
+| EDGAR       | RHOADS       |  95.75 |
+| MILTON      | HOWLAND      | 127.75 |
+| RAUL        | FORTIER      | 100.80 |
+| BEN         | EASTER       | 122.74 |
+| CHESTER     | BENNER       |  99.76 |
+| CECIL       | VINES        | 115.74 |
+| DUANE       | TUBBS        | 148.69 |
+| FRANKLIN    | TROUTMAN     |  74.78 |
+| ANDRE       | RAPP         | 126.72 |
+| ELMER       | NOE          |  98.74 |
+| BRAD        | MCCURDY      | 105.75 |
+| GABRIEL     | HARDER       | 111.74 |
+| RON         | DELUCA       | 103.77 |
+| MITCHELL    | WESTMORELAND | 134.68 |
+| ROLAND      | SOUTH        |  80.77 |
+| ARNOLD      | HAVENS       | 167.67 |
+| HARVEY      | GUAJARDO     |  93.78 |
+| JARED       | ELY          |  87.81 |
+| ADRIAN      | CLARY        |  74.81 |
+| KARL        | SEAL         | 221.55 |
+| CORY        | MEEHAN       |  81.76 |
+| CLAUDE      | HERZOG       | 111.75 |
+| ERIK        | GUILLEN      | 118.71 |
+| DARRYL      | ASHCRAFT     |  76.77 |
+| JAMIE       | WAUGH        | 118.75 |
+| NEIL        | RENNER       | 152.68 |
+| JESSIE      | MILAM        | 141.67 |
+| CHRISTIAN   | JUNG         |  88.76 |
+| JAVIER      | ELROD        | 135.68 |
+| FERNANDO    | CHURCHILL    | 117.75 |
+| CLINTON     | BUFORD       | 103.75 |
+| TED         | BREAUX       | 117.71 |
+| MATHEW      | BOLIN        |  90.78 |
+| TYRONE      | ASHER        | 112.76 |
+| DARREN      | WINDHAM      | 108.76 |
+| LONNIE      | TIRADO       |  94.82 |
+| LANCE       | PEMBERTON    |  82.78 |
+| CODY        | NOLEN        |  98.78 |
+| JULIO       | NOLAND       |  89.79 |
+| KELLY       | KNOTT        | 103.75 |
+| KURT        | EMMONS       |  99.77 |
+| ALLAN       | CORNISH      |  79.81 |
+| NELSON      | CHRISTENSON  |  77.80 |
+| GUY         | BROWNLEE     | 159.68 |
+| CLAYTON     | BARBEE       |  96.74 |
+| HUGH        | WALDROP      |  90.79 |
+| MAX         | PITT         | 107.76 |
+| DWAYNE      | OLVERA       | 101.78 |
+| DWIGHT      | LOMBARDI     |  74.83 |
+| ARMANDO     | GRUBER       |  83.79 |
+| FELIX       | GAFFNEY      |  73.76 |
+| JIMMIE      | EGGLESTON    | 135.72 |
+| EVERETT     | BANDA        | 110.72 |
+| JORDAN      | ARCHULETA    | 132.70 |
+| IAN         | STILL        |  96.73 |
+| WALLACE     | SLONE        | 109.75 |
+| KEN         | PREWITT      | 110.71 |
+| BOB         | PFEIFFER     |  91.76 |
+| JAIME       | NETTLES      | 126.71 |
+| CASEY       | MENA         | 141.66 |
+| ALFREDO     | MCADAMS      |  85.80 |
+| ALBERTO     | HENNING      |  66.79 |
+| DAVE        | GARDINER     | 134.68 |
+| IVAN        | CROMWELL     |  99.74 |
+| JOHNNIE     | CHISHOLM     | 121.76 |
+| SIDNEY      | BURLESON     | 108.75 |
+| BYRON       | BOX          | 120.71 |
+| JULIAN      | VEST         | 109.72 |
+| ISAAC       | OGLESBY      | 126.71 |
+| MORRIS      | MCCARTER     | 139.66 |
+| CLIFTON     | MALCOLM      | 117.73 |
+| WILLARD     | LUMPKIN      |  96.78 |
+| DARYL       | LARUE        | 111.73 |
+| ROSS        | GREY         |  99.73 |
+| VIRGIL      | WOFFORD      | 107.73 |
+| ANDY        | VANHORN      | 113.75 |
+| MARSHALL    | THORN        | 117.77 |
+| SALVADOR    | TEEL         | 129.70 |
+| PERRY       | SWAFFORD     | 117.76 |
+| KIRK        | STCLAIR      |  64.81 |
+| SERGIO      | STANFIELD    | 108.74 |
+| MARION      | OCAMPO       | 115.71 |
+| TRACY       | HERRMANN     | 129.72 |
+| SETH        | HANNON       | 112.75 |
+| KENT        | ARSENAULT    | 134.73 |
+| TERRANCE    | ROUSH        | 111.71 |
+| RENE        | MCALISTER    | 113.74 |
+| EDUARDO     | HIATT        | 130.73 |
+| TERRENCE    | GUNDERSON    | 117.70 |
+| ENRIQUE     | FORSYTHE     |  96.72 |
+| FREDDIE     | DUGGAN       |  99.75 |
+| WADE        | DELVALLE     |  83.78 |
+| AUSTIN      | CINTRON      |  83.81 |
++-------------+--------------+--------+
+599 rows in set (0.3308 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > SELECT a.first_name, a.last_name, sum(b.amount) as total FROM customer a INNER JOIN payment b on a.customer_id = b.customer_id GROUP BY a.customer_id ORDER BY total asc;
++-------------+--------------+--------+
+| first_name  | last_name    | total  |
++-------------+--------------+--------+
+| CAROLINE    | BOWMAN       |  50.85 |
+| LEONA       | OBRIEN       |  50.86 |
+| BRIAN       | WYMAN        |  52.88 |
+| JOHNNY      | TURPIN       |  57.81 |
+| ANNIE       | RUSSELL      |  58.82 |
+| KATHERINE   | RIVERA       |  58.86 |
+| TIFFANY     | JORDAN       |  59.86 |
+| ANITA       | MORALES      |  62.85 |
+| MATTIE      | HOFFMAN      |  64.78 |
+| KIRK        | STCLAIR      |  64.81 |
+| LESTER      | KRAUS        |  65.84 |
+| ALBERTO     | HENNING      |  66.79 |
+| LLOYD       | DOWD         |  66.81 |
+| JOANN       | GARDNER      |  66.84 |
+| VERA        | MCCOY        |  67.82 |
+| JILL        | HAWKINS      |  68.79 |
+| PENNY       | NEAL         |  68.82 |
+| FLOYD       | GANDY        |  69.83 |
+| WAYNE       | TRUONG       |  70.81 |
+| IRMA        | PEARSON      |  70.82 |
+| SAMANTHA    | DUNCAN       |  71.77 |
+| LAUREN      | HUDSON       |  71.80 |
+| ANTHONY     | SCHWAB       |  71.80 |
+| EDITH       | MCDONALD     |  71.81 |
+| EUGENE      | CULPEPPER    |  71.81 |
+| TERRY       | GRISSOM      |  72.80 |
+| JONATHAN    | SCARBOROUGH  |  72.82 |
+| FELIX       | GAFFNEY      |  73.76 |
+| JUAN        | FRALEY       |  73.77 |
+| TONY        | CARRANZA     |  73.79 |
+| JO          | FOWLER       |  73.80 |
+| SHEILA      | WELLS        |  73.82 |
+| HENRY       | BILLINGSLEY  |  73.82 |
+| JEROME      | KENYON       |  73.84 |
+| FRANKLIN    | TROUTMAN     |  74.78 |
+| JEANETTE    | GREENE       |  74.80 |
+| ADRIAN      | CLARY        |  74.81 |
+| DWIGHT      | LOMBARDI     |  74.83 |
+| MARVIN      | YEE          |  75.79 |
+| IDA         | ANDREWS      |  76.77 |
+| DARRYL      | ASHCRAFT     |  76.77 |
+| PEARL       | GARZA        |  76.78 |
+| ANN         | EVANS        |  76.83 |
+| IRENE       | PRICE        |  77.77 |
+| NELSON      | CHRISTENSON  |  77.80 |
+| PAULA       | BRYANT       |  77.82 |
+| GREGORY     | MAULDIN      |  78.77 |
+| HERBERT     | KRUGER       |  78.80 |
+| ANTONIO     | MEEK         |  78.84 |
+| RAY         | HOULE        |  79.78 |
+| NORMA       | GONZALES     |  79.79 |
+| JACOB       | LANCE        |  79.79 |
+| LUIS        | YANEZ        |  79.80 |
+| ALLAN       | CORNISH      |  79.81 |
+| NORMAN      | CURRIER      |  80.74 |
+| BOBBIE      | CRAIG        |  80.76 |
+| ROLAND      | SOUTH        |  80.77 |
+| SAMUEL      | MARLOW       |  80.79 |
+| CHRISTINA   | RAMIREZ      |  80.82 |
+| EILEEN      | CARR         |  80.82 |
+| MELINDA     | FERNANDEZ    |  80.83 |
+| CORY        | MEEHAN       |  81.76 |
+| BARBARA     | JONES        |  81.78 |
+| LYDIA       | BURKE        |  82.76 |
+| LANCE       | PEMBERTON    |  82.78 |
+| KIM         | CRUZ         |  82.79 |
+| WADE        | DELVALLE     |  83.78 |
+| ALICIA      | MILLS        |  83.79 |
+| ARMANDO     | GRUBER       |  83.79 |
+| AUSTIN      | CINTRON      |  83.81 |
+| EVA         | RAMOS        |  83.82 |
+| JOAN        | COOPER       |  84.77 |
+| ROBERTA     | HARPER       |  84.77 |
+| RACHEL      | BARNES       |  84.78 |
+| CHRIS       | BROTHERS     |  84.78 |
+| KENNETH     | GOODEN       |  84.83 |
+| ALLEN       | BUTTERFIELD  |  85.79 |
+| ALFREDO     | MCADAMS      |  85.80 |
+| FELICIA     | SUTTON       |  86.72 |
+| LORRAINE    | STEPHENS     |  86.79 |
+| VANESSA     | SIMS         |  86.81 |
+| LEWIS       | LYMAN        |  86.81 |
+| COLLEEN     | BURTON       |  87.76 |
+| JON         | WILES        |  87.76 |
+| ANNE        | POWELL       |  87.77 |
+| BONNIE      | HUGHES       |  87.79 |
+| MAUREEN     | LITTLE       |  87.79 |
+| JARED       | ELY          |  87.81 |
+| KRISTEN     | CHAVEZ       |  87.82 |
+| BILLIE      | HORTON       |  88.74 |
+| FRED        | WHEAT        |  88.75 |
+| CHRISTIAN   | JUNG         |  88.76 |
+| BERNARD     | COLBY        |  88.78 |
+| TYLER       | WREN         |  88.79 |
+| TARA        | RYAN         |  88.80 |
+| VERNON      | CHAPA        |  88.82 |
+| KEITH       | RICO         |  89.74 |
+| JAY         | ROBB         |  89.74 |
+| ERNEST      | STEPP        |  89.75 |
+| CHAD        | CARBONE      |  89.75 |
+| REBECCA     | SCOTT        |  89.76 |
+| JACK        | FOUST        |  89.76 |
+| MARGARET    | MOORE        |  89.77 |
+| LILLIE      | KIM          |  89.77 |
+| DONALD      | MAHON        |  89.77 |
+| LESLIE      | GORDON       |  89.78 |
+| RUBEN       | GEARY        |  89.79 |
+| JULIO       | NOLAND       |  89.79 |
+| VIVIAN      | RUIZ         |  90.77 |
+| JEFFREY     | SPEAR        |  90.77 |
+| MATHEW      | BOLIN        |  90.78 |
+| HUGH        | WALDROP      |  90.79 |
+| WENDY       | HARRISON     |  91.70 |
+| LUCY        | WHEELER      |  91.74 |
+| JESSIE      | BANKS        |  91.74 |
+| RICKY       | SHELBY       |  91.75 |
+| DARRELL     | POWER        |  91.75 |
+| EMILY       | DIAZ         |  91.76 |
+| VICTOR      | BARKLEY      |  91.76 |
+| BOB         | PFEIFFER     |  91.76 |
+| PHYLLIS     | FOSTER       |  91.77 |
+| SEAN        | DOUGLASS     |  91.77 |
+| CAROL       | GARCIA       |  91.78 |
+| TIMOTHY     | BUNN         |  91.78 |
+| ANNA        | HILL         |  91.79 |
+| DELORES     | HANSEN       |  91.79 |
+| DANNY       | ISOM         |  91.79 |
+| WILMA       | RICHARDS     |  91.80 |
+| KATHLEEN    | ADAMS        |  92.73 |
+| MEGAN       | PALMER       |  92.73 |
+| ALLISON     | STANLEY      |  92.73 |
+| MELANIE     | ARMSTRONG    |  92.75 |
+| SUSAN       | WILSON       |  92.76 |
+| RITA        | GRAHAM       |  92.76 |
+| YVONNE      | WATKINS      |  92.79 |
+| ROBERT      | BAUGHMAN     |  92.79 |
+| JENNIFER    | DAVIS        |  93.72 |
+| HOWARD      | FORTNER      |  93.74 |
+| TAMARA      | NGUYEN       |  93.75 |
+| JACKIE      | LYNCH        |  93.75 |
+| CHARLOTTE   | HUNTER       |  93.76 |
+| GLENN       | PULLEN       |  93.77 |
+| ANDREA      | HENDERSON    |  93.78 |
+| LORETTA     | CARPENTER    |  93.78 |
+| HARVEY      | GUAJARDO     |  93.78 |
+| APRIL       | BURNS        |  94.74 |
+| SCOTT       | SHELLEY      |  94.75 |
+| SUZANNE     | NICHOLS      |  94.76 |
+| EMMA        | BOYD         |  94.77 |
+| NICOLE      | PETERSON     |  94.78 |
+| NELLIE      | GARRETT      |  94.79 |
+| LONNIE      | TIRADO       |  94.82 |
+| ESTHER      | CRAWFORD     |  95.72 |
+| KIMBERLY    | LEE          |  95.75 |
+| CONSTANCE   | REID         |  95.75 |
+| EDGAR       | RHOADS       |  95.75 |
+| PAMELA      | BAKER        |  95.77 |
+| NATALIE     | MEYER        |  95.77 |
+| TONI        | HOLT         |  95.77 |
+| BENJAMIN    | VARNEY       |  95.77 |
+| JOEL        | FRANCISCO    |  95.77 |
+| ERICA       | MATTHEWS     |  95.78 |
+| DERRICK     | BOURQUE      |  95.78 |
+| SHANE       | MILLARD      |  95.78 |
+| ENRIQUE     | FORSYTHE     |  96.72 |
+| IAN         | STILL        |  96.73 |
+| CLAYTON     | BARBEE       |  96.74 |
+| JUDY        | GRAY         |  96.75 |
+| JOSE        | ANDREW       |  96.75 |
+| PEGGY       | MYERS        |  96.76 |
+| WILLARD     | LUMPKIN      |  96.78 |
+| DEREK       | BLAKELY      |  97.72 |
+| GENE        | SANBORN      |  97.73 |
+| CARMEN      | OWENS        |  97.74 |
+| RENEE       | LANE         |  97.74 |
+| MELVIN      | ELLINGTON    |  97.74 |
+| BEVERLY     | BROOKS       |  97.76 |
+| RAFAEL      | ABNEY        |  97.79 |
+| DANIEL      | CABRAL       |  97.80 |
+| PAULINE     | HENRY        |  98.73 |
+| ELMER       | NOE          |  98.74 |
+| MILDRED     | BAILEY       |  98.75 |
+| GWENDOLYN   | MAY          |  98.75 |
+| ANNETTE     | OLSON        |  98.76 |
+| STACY       | CUNNINGHAM   |  98.77 |
+| AGNES       | BISHOP       |  98.77 |
+| FRANCISCO   | SKIDMORE     |  98.78 |
+| CODY        | NOLEN        |  98.78 |
+| DONNA       | THOMPSON     |  98.79 |
+| KAY         | CALDWELL     |  98.80 |
+| THERESA     | WATSON       |  99.70 |
+| ROSS        | GREY         |  99.73 |
+| IVAN        | CROMWELL     |  99.74 |
+| DOROTHY     | TAYLOR       |  99.75 |
+| FREDDIE     | DUGGAN       |  99.75 |
+| CHRISTINE   | ROBERTS      |  99.76 |
+| CHESTER     | BENNER       |  99.76 |
+| LAURIE      | LAWRENCE     |  99.77 |
+| ALBERT      | CROUSE       |  99.77 |
+| RANDALL     | NEUMANN      |  99.77 |
+| KURT        | EMMONS       |  99.77 |
+| KELLY       | TORRES       |  99.78 |
+| RICARDO     | MEADOR       |  99.79 |
+| OSCAR       | AQUINO       |  99.80 |
+| JUDITH      | COX          | 100.67 |
+| LAWRENCE    | LAWTON       | 100.69 |
+| JANE        | BENNETT      | 100.72 |
+| WILLIAM     | SATTERFIELD  | 100.74 |
+| DUSTIN      | GILLETTE     | 100.74 |
+| RONNIE      | RICKETTS     | 100.75 |
+| SHANNON     | FREEMAN      | 100.76 |
+| CONNIE      | WALLACE      | 100.77 |
+| DORIS       | REED         | 100.78 |
+| RAUL        | FORTIER      | 100.80 |
+| WILLIE      | HOWELL       | 101.74 |
+| ERIKA       | PENA         | 101.74 |
+| PHILLIP     | HOLM         | 101.74 |
+| JESSE       | SCHILLING    | 101.74 |
+| LOUISE      | JENKINS      | 101.75 |
+| BERTHA      | FERGUSON     | 101.75 |
+| WILLIE      | MARKHAM      | 101.75 |
+| ADAM        | GOOCH        | 101.78 |
+| COREY       | HAUSER       | 101.78 |
+| DWAYNE      | OLVERA       | 101.78 |
+| MICHEAL     | FORMAN       | 102.74 |
+| ROBIN       | HAYES        | 102.76 |
+| NANCY       | THOMAS       | 103.72 |
+| JEREMY      | HURTADO      | 103.72 |
+| DENISE      | KELLY        | 103.73 |
+| JENNY       | CASTRO       | 103.73 |
+| MARTIN      | BALES        | 103.73 |
+| CARLA       | GUTIERREZ    | 103.74 |
+| BETH        | FRANKLIN     | 103.75 |
+| GARY        | COY          | 103.75 |
+| CLINTON     | BUFORD       | 103.75 |
+| KELLY       | KNOTT        | 103.75 |
+| PEDRO       | CHESTNUT     | 103.76 |
+| BRUCE       | SCHWARZ      | 103.77 |
+| RON         | DELUCA       | 103.77 |
+| ROSE        | HOWARD       | 103.78 |
+| CLARENCE    | GAMEZ        | 104.70 |
+| BRENDA      | WRIGHT       | 104.74 |
+| MARK        | RINEHART     | 104.74 |
+| FRANCIS     | SIKES        | 104.74 |
+| LEAH        | CURTIS       | 104.75 |
+| RODNEY      | MOELLER      | 104.77 |
+| LEO         | EBERT        | 104.77 |
+| STELLA      | MORENO       | 104.78 |
+| JIMMY       | SCHRADER     | 105.71 |
+| DIANA       | ALEXANDER    | 105.73 |
+| DANIELLE    | DANIELS      | 105.75 |
+| THOMAS      | GRIGSBY      | 105.75 |
+| VINCENT     | RALSTON      | 105.75 |
+| BRAD        | MCCURDY      | 105.75 |
+| FREDERICK   | ISBELL       | 105.79 |
+| BOBBY       | BOUDREAU     | 106.65 |
+| ERIN        | DUNN         | 106.73 |
+| LILLIAN     | GRIFFIN      | 106.75 |
+| LISA        | ANDERSON     | 106.76 |
+| PETER       | MENARD       | 106.77 |
+| CARL        | ARTIS        | 106.77 |
+| CARLOS      | COUGHLIN     | 106.77 |
+| TOM         | MILNER       | 107.68 |
+| JEFF        | EAST         | 107.70 |
+| JULIE       | SANCHEZ      | 107.71 |
+| VIRGIL      | WOFFORD      | 107.73 |
+| EDNA        | WEST         | 107.74 |
+| DEANNA      | BYRD         | 107.74 |
+| ELAINE      | STEVENS      | 107.76 |
+| MAX         | PITT         | 107.76 |
+| MARIAN      | MENDOZA      | 107.77 |
+| DORA        | MEDINA       | 107.77 |
+| CAROLE      | BARNETT      | 108.70 |
+| LUCILLE     | HOLMES       | 108.72 |
+| SERGIO      | STANFIELD    | 108.74 |
+| VICKI       | FIELDS       | 108.75 |
+| SIDNEY      | BURLESON     | 108.75 |
+| DARREN      | WINDHAM      | 108.76 |
+| FRANCES     | PARKER       | 108.78 |
+| LEONARD     | SCHOFIELD    | 109.68 |
+| KRISTINA    | CHAMBERS     | 109.72 |
+| JULIAN      | VEST         | 109.72 |
+| ANDREW      | PURDY        | 109.73 |
+| DEAN        | SAUER        | 109.73 |
+| JOSEPHINE   | GOMEZ        | 109.74 |
+| GAIL        | KNIGHT       | 109.75 |
+| KATIE       | ELLIOTT      | 109.75 |
+| RICHARD     | MCCRARY      | 109.75 |
+| LEON        | BOSTIC       | 109.75 |
+| WALLACE     | SLONE        | 109.75 |
+| DAN         | PAINE        | 109.78 |
+| HAZEL       | WARREN       | 110.66 |
+| JUANITA     | MASON        | 110.70 |
+| KYLE        | SPURLOCK     | 110.70 |
+| KEN         | PREWITT      | 110.71 |
+| RUBY        | WASHINGTON   | 110.72 |
+| RANDY       | GAITHER      | 110.72 |
+| EVERETT     | BANDA        | 110.72 |
+| AMANDA      | CARTER       | 110.73 |
+| YOLANDA     | WEAVER       | 110.73 |
+| GEORGIA     | JACOBS       | 110.74 |
+| TRAVIS      | ESTEP        | 110.75 |
+| MYRTLE      | FLEMING      | 110.76 |
+| AARON       | SELBY        | 110.76 |
+| CYNTHIA     | YOUNG        | 111.68 |
+| TERRANCE    | ROUSH        | 111.71 |
+| GINA        | WILLIAMSON   | 111.72 |
+| VICTORIA    | GIBSON       | 111.73 |
+| EARL        | SHANKS       | 111.73 |
+| DARYL       | LARUE        | 111.73 |
+| CLAUDIA     | FULLER       | 111.74 |
+| GABRIEL     | HARDER       | 111.74 |
+| CLAUDE      | HERZOG       | 111.75 |
+| CALVIN      | MARTEL       | 111.77 |
+| GERALDINE   | PERKINS      | 112.70 |
+| MABEL       | HOLLAND      | 112.70 |
+| MARIO       | CHEATHAM     | 112.72 |
+| DALE        | RATCLIFF     | 112.73 |
+| LARRY       | THRASHER     | 112.74 |
+| ASHLEY      | RICHARDSON   | 112.75 |
+| SETH        | HANNON       | 112.75 |
+| TYRONE      | ASHER        | 112.76 |
+| BRENT       | HARKINS      | 112.77 |
+| LOIS        | BUTLER       | 113.65 |
+| DARLENE     | ROSE         | 113.69 |
+| CINDY       | FISHER       | 113.71 |
+| CLIFFORD    | BOWENS       | 113.71 |
+| AMBER       | DIXON        | 113.73 |
+| SHELLY      | WATTS        | 113.74 |
+| GLEN        | TALBERT      | 113.74 |
+| RENE        | MCALISTER    | 113.74 |
+| ANDY        | VANHORN      | 113.75 |
+| LAURA       | RODRIGUEZ    | 113.78 |
+| HOLLY       | FOX          | 114.69 |
+| MATTHEW     | MAHAN        | 114.69 |
+| EVELYN      | MORGAN       | 114.72 |
+| EDWARD      | BAUGH        | 114.72 |
+| DENNIS      | GILMAN       | 114.72 |
+| BILL        | GAVIN        | 114.72 |
+| CHARLENE    | ALVAREZ      | 114.73 |
+| MARIE       | TURNER       | 114.74 |
+| DOLORES     | WAGNER       | 114.74 |
+| DOUGLAS     | GRAF         | 114.75 |
+| JESUS       | MCCARTNEY    | 114.76 |
+| ANGEL       | BARCLAY      | 115.68 |
+| SHARON      | ROBINSON     | 115.70 |
+| HEATHER     | MORRIS       | 115.70 |
+| MARCUS      | HIDALGO      | 115.70 |
+| DEBORAH     | WALKER       | 115.71 |
+| BECKY       | MILES        | 115.71 |
+| HERMAN      | DEVORE       | 115.71 |
+| CLYDE       | TOBIAS       | 115.71 |
+| MARION      | OCAMPO       | 115.71 |
+| REGINALD    | KINDER       | 115.72 |
+| JEAN        | BELL         | 115.73 |
+| DAVID       | ROYAL        | 115.74 |
+| CECIL       | VINES        | 115.74 |
+| MAXINE      | SILVA        | 116.68 |
+| KRISTIN     | JOHNSTON     | 116.69 |
+| THEODORE    | CULP         | 116.69 |
+| MANUEL      | MURRELL      | 116.70 |
+| EDWIN       | BURK         | 116.77 |
+| KEVIN       | SCHULER      | 116.78 |
+| CAROLYN     | PEREZ        | 117.70 |
+| TERRENCE    | GUNDERSON    | 117.70 |
+| TODD        | TAN          | 117.71 |
+| TED         | BREAUX       | 117.71 |
+| BETTY       | WHITE        | 117.72 |
+| ELLEN       | SIMPSON      | 117.72 |
+| VELMA       | LUCAS        | 117.73 |
+| CLIFTON     | MALCOLM      | 117.73 |
+| MARLENE     | WELCH        | 117.74 |
+| FERNANDO    | CHURCHILL    | 117.75 |
+| SAM         | MCDUFFIE     | 117.76 |
+| PERRY       | SWAFFORD     | 117.76 |
+| MARSHALL    | THORN        | 117.77 |
+| MARY        | SMITH        | 118.68 |
+| LEROY       | BUSTAMANTE   | 118.68 |
+| ERIK        | GUILLEN      | 118.71 |
+| SANDRA      | MARTIN       | 118.72 |
+| NORA        | HERRERA      | 118.72 |
+| STEPHEN     | QUALLS       | 118.72 |
+| TRACEY      | BARRETT      | 118.73 |
+| MISTY       | LAMBERT      | 118.73 |
+| STEPHANIE   | MITCHELL     | 118.75 |
+| JAMIE       | WAUGH        | 118.75 |
+| SALLY       | PIERCE       | 119.68 |
+| PATRICK     | NEWSOM       | 119.69 |
+| SARAH       | LEWIS        | 119.70 |
+| JOSHUA      | MARK         | 119.70 |
+| AUDREY      | RAY          | 119.71 |
+| PATSY       | DAVIDSON     | 119.72 |
+| LEE         | HAWKS        | 119.73 |
+| BEATRICE    | ARNOLD       | 119.74 |
+| HECTOR      | POINDEXTER   | 119.74 |
+| VICKIE      | BREWER       | 120.69 |
+| BYRON       | BOX          | 120.71 |
+| DAWN        | SULLIVAN     | 120.74 |
+| ARLENE      | HARVEY       | 120.74 |
+| ALFRED      | CASILLAS     | 120.74 |
+| CHARLIE     | BESS         | 120.74 |
+| PAUL        | TROUT        | 120.77 |
+| PHILIP      | CAUSEY       | 121.69 |
+| JEFFERY     | PINSON       | 121.69 |
+| GERALD      | FULTZ        | 121.70 |
+| VALERIE     | BLACK        | 121.74 |
+| JOHNNIE     | CHISHOLM     | 121.76 |
+| HEIDI       | LARSON       | 122.66 |
+| NATHAN      | RUNYON       | 122.68 |
+| CHRISTY     | VARGAS       | 122.69 |
+| CATHY       | SPENCER      | 122.71 |
+| HILDA       | HOPKINS      | 122.71 |
+| BRANDY      | GRAVES       | 122.72 |
+| ERIC        | ROBERT       | 122.73 |
+| BEN         | EASTER       | 122.74 |
+| MELISSA     | KING         | 123.66 |
+| MARC        | OUTLAW       | 123.70 |
+| NINA        | SOTO         | 123.71 |
+| LYNN        | PAYNE        | 123.72 |
+| CARRIE      | PORTER       | 124.66 |
+| JOY         | GEORGE       | 124.67 |
+| CRAIG       | MORRELL      | 124.70 |
+| BRYAN       | HARDISON     | 124.72 |
+| RICK        | MATTOX       | 124.73 |
+| ALAN        | KAHN         | 124.74 |
+| RUTH        | MARTINEZ     | 125.76 |
+| THELMA      | MURRAY       | 126.68 |
+| VERONICA    | STONE        | 126.68 |
+| SHIRLEY     | ALLEN        | 126.69 |
+| FLORENCE    | WOODS        | 126.70 |
+| JAIME       | NETTLES      | 126.71 |
+| ISAAC       | OGLESBY      | 126.71 |
+| SONIA       | GREGORY      | 126.72 |
+| ANDRE       | RAPP         | 126.72 |
+| TERRI       | VASQUEZ      | 126.73 |
+| BRADLEY     | MOTLEY       | 126.73 |
+| MARTHA      | GONZALEZ     | 127.66 |
+| JOANNE      | ROBERTSON    | 127.66 |
+| MARJORIE    | TUCKER       | 127.68 |
+| FRANK       | WAGGONER     | 127.68 |
+| WALTER      | PERRYMAN     | 127.70 |
+| AMY         | LOPEZ        | 127.71 |
+| TERRY       | CARLSON      | 127.71 |
+| MICHAEL     | SILVERMAN    | 127.71 |
+| JANET       | PHILLIPS     | 127.73 |
+| MILTON      | HOWLAND      | 127.75 |
+| SHERRI      | RHODES       | 128.67 |
+| JIM         | REA          | 128.67 |
+| MONICA      | HICKS        | 128.70 |
+| TERESA      | ROGERS       | 128.71 |
+| JASON       | MORRISSEY    | 128.72 |
+| PATRICIA    | JOHNSON      | 128.73 |
+| EDDIE       | TOMLIN       | 128.73 |
+| JUSTIN      | NGO          | 129.64 |
+| VIRGINIA    | GREEN        | 129.68 |
+| VIOLA       | HANSON       | 129.68 |
+| KATHY       | JAMES        | 129.70 |
+| CASSANDRA   | WALTERS      | 129.70 |
+| RAMONA      | HALE         | 129.70 |
+| SALVADOR    | TEEL         | 129.70 |
+| GILBERT     | SLEDGE       | 129.72 |
+| TRACY       | HERRMANN     | 129.72 |
+| DEBBIE      | REYES        | 130.68 |
+| HAROLD      | MARTINO      | 130.68 |
+| MICHELE     | GRANT        | 130.70 |
+| JOYCE       | EDWARDS      | 130.72 |
+| EDUARDO     | HIATT        | 130.73 |
+| KATHRYN     | COLEMAN      | 130.74 |
+| GEORGE      | LINTON       | 131.67 |
+| JAMES       | GANNON       | 131.70 |
+| KAREN       | JACKSON      | 131.73 |
+| COURTNEY    | DAY          | 132.68 |
+| TRACY       | COLE         | 132.70 |
+| RONALD      | WEINER       | 132.70 |
+| JORDAN      | ARCHULETA    | 132.70 |
+| STEVEN      | CURLEY       | 132.71 |
+| BESSIE      | MORRISON     | 132.72 |
+| ROSA        | REYNOLDS     | 133.70 |
+| DANA        | HART         | 133.71 |
+| JENNIE      | TERRY        | 133.71 |
+| TINA        | SIMMONS      | 133.72 |
+| NATHANIEL   | ADAM         | 133.72 |
+| CHERYL      | MURPHY       | 133.73 |
+| DON         | BONE         | 133.75 |
+| JORGE       | OLIVARES     | 134.66 |
+| BARRY       | LOVELACE     | 134.67 |
+| HELEN       | HARRIS       | 134.68 |
+| JULIA       | FLORES       | 134.68 |
+| MITCHELL    | WESTMORELAND | 134.68 |
+| DAVE        | GARDINER     | 134.68 |
+| JOSEPH      | JOY          | 134.70 |
+| KENT        | ARSENAULT    | 134.73 |
+| REGINA      | BERRY        | 135.66 |
+| ETHEL       | WEBB         | 135.68 |
+| JAVIER      | ELROD        | 135.68 |
+| DIANNE      | SHELTON      | 135.69 |
+| GLORIA      | COOK         | 135.70 |
+| RAYMOND     | MCWHORTER    | 135.70 |
+| MIGUEL      | BETANCOURT   | 135.71 |
+| JIMMIE      | EGGLESTON    | 135.72 |
+| LINDA       | WILLIAMS     | 135.74 |
+| MIRIAM      | MCKINNEY     | 135.74 |
+| RUSSELL     | BRINSON      | 136.64 |
+| JEANNE      | LAWSON       | 136.73 |
+| GERTRUDE    | CASTILLO     | 137.66 |
+| CRYSTAL     | FORD         | 137.67 |
+| ELLA        | OLIVER       | 137.69 |
+| JOHN        | FARNSWORTH   | 137.69 |
+| MARILYN     | ROSS         | 137.70 |
+| BRETT       | CORNWELL     | 138.66 |
+| ALICE       | STEWART      | 138.67 |
+| CHARLES     | KOWALSKI     | 138.68 |
+| JOE         | GILLILAND    | 138.71 |
+| MAURICE     | CRAWLEY      | 138.71 |
+| MORRIS      | MCCARTER     | 139.66 |
+| GRACE       | ELLIS        | 139.67 |
+| STANLEY     | SCROGGINS    | 139.70 |
+| ROBERTO     | VU           | 139.70 |
+| JAMIE       | RICE         | 139.71 |
+| ALVIN       | DELOACH      | 139.71 |
+| ANGELA      | HERNANDEZ    | 140.64 |
+| GLENDA      | FRAZIER      | 140.68 |
+| RAMON       | CHOATE       | 140.69 |
+| ELSIE       | KELLEY       | 141.63 |
+| CASEY       | MENA         | 141.66 |
+| SARA        | PERRY        | 141.67 |
+| JESSIE      | MILAM        | 141.67 |
+| LORI        | WOOD         | 141.69 |
+| GREG        | ROBINS       | 141.70 |
+| DEBRA       | NELSON       | 141.71 |
+| CATHERINE   | CAMPBELL     | 142.66 |
+| MINNIE      | ROMERO       | 142.66 |
+| VIOLET      | RODRIQUEZ    | 142.70 |
+| RYAN        | SALISBURY    | 142.70 |
+| SYLVIA      | ORTIZ        | 143.68 |
+| JERRY       | JORDON       | 143.71 |
+| ROY         | WHITING      | 143.71 |
+| ELIZABETH   | BROWN        | 144.62 |
+| JANICE      | WARD         | 144.66 |
+| TANYA       | GILBERT      | 144.67 |
+| OLGA        | JIMENEZ      | 144.68 |
+| TROY        | QUIGLEY      | 144.70 |
+| BERNICE     | WILLIS       | 145.67 |
+| NICHOLAS    | BARFIELD     | 145.68 |
+| WANDA       | PATTERSON    | 145.70 |
+| ROGER       | QUINTANILLA  | 146.64 |
+| GLADYS      | HAMILTON     | 146.69 |
+| ZACHARY     | HITE         | 146.69 |
+| ROSEMARY    | SCHMIDT      | 147.65 |
+| CHRISTOPHER | GRECO        | 147.69 |
+| JACQUELINE  | LONG         | 148.67 |
+| DUANE       | TUBBS        | 148.69 |
+| BILLY       | POULIN       | 149.65 |
+| RALPH       | MADRIGAL     | 150.66 |
+| MARSHA      | DOUGLAS      | 151.63 |
+| ALEXANDER   | FENNELL      | 151.64 |
+| ALMA        | AUSTIN       | 151.65 |
+| STACEY      | MONTGOMERY   | 151.66 |
+| MARIA       | MILLER       | 151.67 |
+| ALEX        | GRESHAM      | 151.67 |
+| BRANDON     | HUEY         | 152.63 |
+| NAOMI       | JENNINGS     | 152.65 |
+| LESLIE      | SEWARD       | 152.65 |
+| JESSICA     | HALL         | 152.66 |
+| SHAWN       | HEATON       | 152.67 |
+| NEIL        | RENNER       | 152.68 |
+| SHERRY      | MARSHALL     | 153.66 |
+| SUE         | PETERS       | 154.60 |
+| TAMMY       | SANDERS      | 155.59 |
+| MICHELLE    | CLARK        | 155.65 |
+| ARTHUR      | SIMPKINS     | 155.68 |
+| PRISCILLA   | LOWE         | 157.65 |
+| HARRY       | ARCE         | 157.65 |
+| STEVE       | MACKENZIE    | 158.66 |
+| MAE         | FLETCHER     | 158.69 |
+| MARGIE      | WADE         | 159.64 |
+| WARREN      | SHERROD      | 159.67 |
+| GUY         | BROWNLEE     | 159.68 |
+| BRITTANY    | RILEY        | 159.72 |
+| GORDON      | ALLARD       | 160.68 |
+| LOUIS       | LEONE        | 161.65 |
+| TONYA       | CHAPMAN      | 161.68 |
+| DAISY       | BATES        | 162.62 |
+| MIKE        | WAY          | 166.65 |
+| CURTIS      | IRBY         | 167.62 |
+| ARNOLD      | HAVENS       | 167.67 |
+| LENA        | JENSEN       | 168.68 |
+| DIANE       | COLLINS      | 169.65 |
+| JUNE        | CARROLL      | 173.63 |
+| ANA         | BRADLEY      | 174.66 |
+| MARCIA      | DEAN         | 175.58 |
+| TIM         | CARY         | 175.61 |
+| WESLEY      | BULL         | 177.60 |
+| TOMMY       | COLLAZO      | 186.62 |
+| RHONDA      | KENNEDY      | 194.61 |
+| MARION      | SNYDER       | 194.61 |
+| CLARA       | SHAW         | 195.58 |
+| ELEANOR     | HUNT         | 216.54 |
+| KARL        | SEAL         | 221.55 |
++-------------+--------------+--------+
+599 rows in set (0.2694 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > SELECT a.first_name, a.last_name, sum(b.amount) as total FROM customer a INNER JOIN payment b on a.customer_id = b.customer_id GROUP BY a.customer_id ORDER BY total desc limit 1;
++------------+-----------+--------+
+| first_name | last_name | total  |
++------------+-----------+--------+
+| KARL       | SEAL      | 221.55 |
++------------+-----------+--------+
+1 row in set (0.2053 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > SELECT a.first_name, a.last_name, sum(b.amount) as total FROM customer a INNER JOIN payment b on a.customer_id = b.customer_id GROUP BY a.customer_id ORDER BY total asc limit 1;
++------------+-----------+-------+
+| first_name | last_name | total |
++------------+-----------+-------+
+| CAROLINE   | BOWMAN    | 50.85 |
++------------+-----------+-------+
+1 row in set (0.2384 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > show tables;
++----------------------------+
+| Tables_in_sakila           |
++----------------------------+
+| actor                      |
+| actor_info                 |
+| address                    |
+| category                   |
+| city                       |
+| country                    |
+| customer                   |
+| customer_list              |
+| film                       |
+| film_actor                 |
+| film_category              |
+| film_list                  |
+| film_text                  |
+| inventory                  |
+| language                   |
+| nicer_but_slower_film_list |
+| payment                    |
+| rental                     |
+| sales_by_film_category     |
+| sales_by_store             |
+| staff                      |
+| staff_list                 |
+| store                      |
++----------------------------+
+23 rows in set (0.0095 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > use world;
+Default schema set to `world`.
+Fetching global names, object names from `world` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  world  SQL > show tables;
++-----------------+
+| Tables_in_world |
++-----------------+
+| city            |
+| country         |
+| countrylanguage |
++-----------------+
+3 rows in set (0.0075 sec)
+ MySQL  localhost:3306 ssl  world  SQL > desc country;
++----------------+---------------------------------------------------------------------------------------+------+-----+---------+-------+
+| Field          | Type                                                                                  | Null | Key | Default | Extra |
++----------------+---------------------------------------------------------------------------------------+------+-----+---------+-------+
+| Code           | char(3)                                                                               | NO   | PRI |         |       |
+| Name           | char(52)                                                                              | NO   |     |         |       |
+| Continent      | enum('Asia','Europe','North America','Africa','Oceania','Antarctica','South America') | NO   |     | Asia    |       |
+| Region         | char(26)                                                                              | NO   |     |         |       |
+| SurfaceArea    | decimal(10,2)                                                                         | NO   |     | 0.00    |       |
+| IndepYear      | smallint                                                                              | YES  |     | NULL    |       |
+| Population     | int                                                                                   | NO   |     | 0       |       |
+| LifeExpectancy | decimal(3,1)                                                                          | YES  |     | NULL    |       |
+| GNP            | decimal(10,2)                                                                         | YES  |     | NULL    |       |
+| GNPOld         | decimal(10,2)                                                                         | YES  |     | NULL    |       |
+| LocalName      | char(45)                                                                              | NO   |     |         |       |
+| GovernmentForm | char(45)                                                                              | NO   |     |         |       |
+| HeadOfState    | char(60)                                                                              | YES  |     | NULL    |       |
+| Capital        | int                                                                                   | YES  |     | NULL    |       |
+| Code2          | char(2)                                                                               | NO   |     |         |       |
++----------------+---------------------------------------------------------------------------------------+------+-----+---------+-------+
+15 rows in set (0.0125 sec)
+ MySQL  localhost:3306 ssl  world  SQL > desc city;
++-------------+----------+------+-----+---------+----------------+
+| Field       | Type     | Null | Key | Default | Extra          |
++-------------+----------+------+-----+---------+----------------+
+| ID          | int      | NO   | PRI | NULL    | auto_increment |
+| Name        | char(35) | NO   |     |         |                |
+| CountryCode | char(3)  | NO   | MUL |         |                |
+| District    | char(20) | NO   |     |         |                |
+| Population  | int      | NO   |     | 0       |                |
++-------------+----------+------+-----+---------+----------------+
+5 rows in set (0.0117 sec)
+ MySQL  localhost:3306 ssl  world  SQL > SELECT a.name, sum(b.name) as total FROM country a INNER JOIN city b on a.code = b.countrycode group by a.name limit 50;
++---------------------------------------+-------+
+| name                                  | total |
++---------------------------------------+-------+
+| Aruba                                 |     0 |
+| Afghanistan                           |     0 |
+| Angola                                |     0 |
+| Anguilla                              |     0 |
+| Albania                               |     0 |
+| Andorra                               |     0 |
+| Netherlands Antilles                  |     0 |
+| United Arab Emirates                  |     0 |
+| Argentina                             |     0 |
+| Armenia                               |     0 |
+| American Samoa                        |     0 |
+| Antigua and Barbuda                   |     0 |
+| Australia                             |     0 |
+| Austria                               |     0 |
+| Azerbaijan                            |     0 |
+| Burundi                               |     0 |
+| Belgium                               |     0 |
+| Benin                                 |     0 |
+| Burkina Faso                          |     0 |
+| Bangladesh                            |     0 |
+| Bulgaria                              |     0 |
+| Bahrain                               |     0 |
+| Bahamas                               |     0 |
+| Bosnia and Herzegovina                |     0 |
+| Belarus                               |     0 |
+| Belize                                |     0 |
+| Bermuda                               |     0 |
+| Bolivia                               |     0 |
+| Brazil                                |     0 |
+| Barbados                              |     0 |
+| Brunei                                |     0 |
+| Bhutan                                |     0 |
+| Botswana                              |     0 |
+| Central African Republic              |     0 |
+| Canada                                |     0 |
+| Cocos (Keeling) Islands               |     0 |
+| Switzerland                           |     0 |
+| Chile                                 |     0 |
+| China                                 |     0 |
+| Côte d’Ivoire                         |     0 |
+| Cameroon                              |     0 |
+| Congo, The Democratic Republic of the |     0 |
+| Congo                                 |     0 |
+| Cook Islands                          |     0 |
+| Colombia                              |     0 |
+| Comoros                               |     0 |
+| Cape Verde                            |     0 |
+| Costa Rica                            |     0 |
+| Cuba                                  |     0 |
+| Christmas Island                      |     0 |
++---------------------------------------+-------+
+50 rows in set, 4079 warnings (0.3041 sec)
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Oranjestad'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kabul'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Qandahar'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Herat'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mazar-e-Sharif'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Luanda'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Huambo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Lobito'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Benguela'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Namibe'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'South Hill'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'The Valley'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tirana'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Andorra la Vella'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Willemstad'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dubai'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Abu Dhabi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sharja'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'al-Ayn'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ajman'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Buenos Aires'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'La Matanza'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Córdoba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Rosario'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Lomas de Zamora'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Quilmes'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Almirante Brown'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'La Plata'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mar del Plata'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'San Miguel de Tucumán'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Lanús'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Merlo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'General San Martín'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Salta'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Moreno'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santa Fé'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Avellaneda'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tres de Febrero'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Morón'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Florencio Varela'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'San Isidro'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tigre'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Malvinas Argentinas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Vicente López'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Berazategui'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Corrientes'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'San Miguel'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bahía Blanca'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Esteban Echeverría'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Resistencia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'José C. Paz'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Paraná'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Godoy Cruz'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Posadas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Guaymallén'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santiago del Estero'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'San Salvador de Jujuy'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hurlingham'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Neuquén'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ituzaingó'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'San Fernando'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Formosa'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Las Heras'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'La Rioja'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'San Fernando del Valle de Cata'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Río Cuarto'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Comodoro Rivadavia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mendoza'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'San Nicolás de los Arroyos'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'San Juan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Escobar'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Concordia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pilar'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'San Luis'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ezeiza'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'San Rafael'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tandil'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yerevan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Gjumri'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Vanadzor'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tafuna'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Fagatogo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Saint John´s'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sydney'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Melbourne'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Brisbane'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Perth'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Adelaide'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Canberra'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Gold Coast'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Newcastle'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Central Coast'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Wollongong'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hobart'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Geelong'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Townsville'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cairns'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Wien'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Graz'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Linz'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Salzburg'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Innsbruck'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Klagenfurt'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Baku'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Gäncä'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sumqayit'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mingäçevir'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bujumbura'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Antwerpen'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Gent'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Charleroi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Liège'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bruxelles [Brussel]'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Brugge'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Schaerbeek'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Namur'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mons'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cotonou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Porto-Novo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Djougou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Parakou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ouagadougou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bobo-Dioulasso'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Koudougou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dhaka'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Chittagong'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Khulna'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Rajshahi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Narayanganj'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Rangpur'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mymensingh'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Barisal'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tungi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jessore'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Comilla'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nawabganj'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dinajpur'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bogra'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sylhet'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Brahmanbaria'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tangail'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jamalpur'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pabna'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Naogaon'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sirajganj'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Narsinghdi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Saidpur'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Gazipur'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sofija'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Plovdiv'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Varna'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Burgas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ruse'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Stara Zagora'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pleven'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sliven'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dobric'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Šumen'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'al-Manama'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nassau'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sarajevo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Banja Luka'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zenica'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Minsk'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Gomel'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mogiljov'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Vitebsk'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Grodno'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Brest'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bobruisk'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Baranovitši'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Borisov'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pinsk'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Orša'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mozyr'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Novopolotsk'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Lida'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Soligorsk'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Molodetšno'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Belize City'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Belmopan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Saint George'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hamilton'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santa Cruz de la Sierra'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'La Paz'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'El Alto'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cochabamba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Oruro'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sucre'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Potosí'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tarija'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'São Paulo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Rio de Janeiro'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Salvador'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Belo Horizonte'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Fortaleza'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Brasília'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Curitiba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Recife'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Porto Alegre'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Manaus'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Belém'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Guarulhos'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Goiânia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Campinas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'São Gonçalo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nova Iguaçu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'São Luís'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Maceió'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Duque de Caxias'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'São Bernardo do Campo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Teresina'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Natal'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Osasco'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Campo Grande'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santo André'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'João Pessoa'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jaboatão dos Guararapes'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Contagem'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'São José dos Campos'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Uberlândia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Feira de Santana'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ribeirão Preto'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sorocaba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Niterói'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cuiabá'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Juiz de Fora'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Aracaju'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'São João de Meriti'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Londrina'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Joinville'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Belford Roxo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santos'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ananindeua'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Campos dos Goytacazes'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mauá'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Carapicuíba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Olinda'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Campina Grande'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'São José do Rio Preto'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Caxias do Sul'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Moji das Cruzes'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Diadema'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Aparecida de Goiânia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Piracicaba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cariacica'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Vila Velha'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pelotas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bauru'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Porto Velho'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Serra'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Betim'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jundíaí'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Canoas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Franca'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'São Vicente'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Maringá'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Montes Claros'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Anápolis'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Florianópolis'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Petrópolis'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Itaquaquecetuba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Vitória'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ponta Grossa'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Rio Branco'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Foz do Iguaçu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Macapá'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ilhéus'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Vitória da Conquista'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Uberaba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Paulista'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Limeira'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Blumenau'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Caruaru'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santarém'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Volta Redonda'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Novo Hamburgo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Caucaia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santa Maria'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cascavel'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Guarujá'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ribeirão das Neves'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Governador Valadares'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Taubaté'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Imperatriz'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Gravataí'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Embu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mossoró'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Várzea Grande'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Petrolina'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Barueri'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Viamão'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ipatinga'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Juazeiro'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Juazeiro do Norte'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Taboão da Serra'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'São José dos Pinhais'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Magé'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Suzano'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'São Leopoldo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Marília'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'São Carlos'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sumaré'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Presidente Prudente'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Divinópolis'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sete Lagoas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Rio Grande'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Itabuna'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jequié'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Arapiraca'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Colombo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Americana'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Alvorada'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Araraquara'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Itaboraí'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santa Bárbara d´Oeste'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nova Friburgo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jacareí'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Araçatuba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Barra Mansa'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Praia Grande'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Marabá'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Criciúma'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Boa Vista'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Passo Fundo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dourados'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santa Luzia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Rio Claro'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Maracanaú'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Guarapuava'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Rondonópolis'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'São José'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cachoeiro de Itapemirim'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nilópolis'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Itapevi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cabo de Santo Agostinho'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Camaçari'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sobral'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Itajaí'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Chapecó'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cotia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Lages'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ferraz de Vasconcelos'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Indaiatuba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hortolândia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Caxias'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'São Caetano do Sul'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Itu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nossa Senhora do Socorro'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Parnaíba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Poços de Caldas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Teresópolis'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Barreiras'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Castanhal'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Alagoinhas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Itapecerica da Serra'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Uruguaiana'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Paranaguá'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ibirité'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Timon'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Luziânia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Macaé'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Teófilo Otoni'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Moji-Guaçu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Palmas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pindamonhangaba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Francisco Morato'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bagé'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sapucaia do Sul'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cabo Frio'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Itapetininga'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Patos de Minas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Camaragibe'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bragança Paulista'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Queimados'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Araguaína'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Garanhuns'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Vitória de Santo Antão'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santa Rita'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Barbacena'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Abaetetuba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jaú'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Lauro de Freitas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Franco da Rocha'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Teixeira de Freitas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Varginha'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ribeirão Pires'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sabará'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Catanduva'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Rio Verde'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Botucatu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Colatina'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santa Cruz do Sul'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Linhares'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Apucarana'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Barretos'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Guaratinguetá'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cachoeirinha'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Codó'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jaraguá do Sul'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cubatão'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Itabira'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Itaituba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Araras'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Resende'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Atibaia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pouso Alegre'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Toledo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Crato'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Passos'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Araguari'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'São José de Ribamar'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pinhais'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sertãozinho'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Conselheiro Lafaiete'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Paulo Afonso'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Angra dos Reis'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Eunápolis'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Salto'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ourinhos'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Parnamirim'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jacobina'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Coronel Fabriciano'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Birigui'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tatuí'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ji-Paraná'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bacabal'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cametá'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Guaíba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'São Lourenço da Mata'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santana do Livramento'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Votorantim'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Campo Largo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Patos'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ituiutaba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Corumbá'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Palhoça'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Barra do Piraí'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bento Gonçalves'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Poá'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Águas Lindas de Goiás'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bridgetown'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bandar Seri Begawan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Thimphu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Gaborone'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Francistown'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bangui'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Montréal'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Calgary'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Toronto'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'North York'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Winnipeg'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Edmonton'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mississauga'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Scarborough'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Vancouver'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Etobicoke'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'London'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hamilton'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ottawa'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Laval'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Surrey'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Brampton'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Windsor'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Saskatoon'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kitchener'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Markham'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Regina'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Burnaby'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Québec'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'York'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Richmond'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Vaughan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Burlington'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Oshawa'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Oakville'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Saint Catharines'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Longueuil'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Richmond Hill'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Thunder Bay'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nepean'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cape Breton'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'East York'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Halifax'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cambridge'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Gloucester'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Abbotsford'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Guelph'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Saint John´s'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Coquitlam'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Saanich'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Gatineau'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Delta'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sudbury'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kelowna'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Barrie'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bantam'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'West Island'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zürich'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Geneve'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Basel'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bern'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Lausanne'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santiago de Chile'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Puente Alto'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Viña del Mar'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Valparaíso'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Talcahuano'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Antofagasta'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'San Bernardo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Temuco'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Concepción'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Rancagua'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Arica'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Talca'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Chillán'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Iquique'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Los Angeles'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Puerto Montt'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Coquimbo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Osorno'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'La Serena'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Calama'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Valdivia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Punta Arenas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Copiapó'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Quilpué'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Curicó'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ovalle'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Coronel'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'San Pedro de la Paz'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Melipilla'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shanghai'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Peking'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Chongqing'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tianjin'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Wuhan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Harbin'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shenyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kanton [Guangzhou]'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Chengdu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nanking [Nanjing]'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Changchun'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xi´an'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dalian'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Qingdao'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jinan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hangzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zhengzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shijiazhuang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Taiyuan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kunming'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Changsha'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nanchang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Fuzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Lanzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Guiyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ningbo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hefei'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Urumtši [Ürümqi]'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Anshan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Fushun'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nanning'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zibo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Qiqihar'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jilin'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tangshan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Baotou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shenzhen'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hohhot'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Handan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Wuxi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xuzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Datong'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yichun'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Benxi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Luoyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Suzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xining'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Huainan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jixi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Daqing'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Fuxin'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Amoy [Xiamen]'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Liuzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shantou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jinzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mudanjiang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yinchuan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Changzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zhangjiakou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dandong'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hegang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kaifeng'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jiamusi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Liaoyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hengyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Baoding'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hunjiang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xinxiang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Huangshi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Haikou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yantai'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bengbu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xiangtan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Weifang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Wuhu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pingxiang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yingkou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Anyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Panzhihua'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pingdingshan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xiangfan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zhuzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jiaozuo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Wenzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zhangjiang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zigong'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shuangyashan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zaozhuang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yakeshi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yichang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zhenjiang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Huaibei'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Qinhuangdao'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Guilin'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Liupanshui'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Panjin'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yangquan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jinxi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Liaoyuan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Lianyungang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xianyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tai´an'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Chifeng'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shaoguan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nantong'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Leshan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Baoji'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Linyi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tonghua'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Siping'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Changzhi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tengzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Chaozhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yangzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dongwan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ma´anshan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Foshan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yueyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xingtai'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Changde'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shihezi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yancheng'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jiujiang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dongying'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shashi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xintai'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jingdezhen'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tongchuan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zhongshan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shiyan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tieli'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jining'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Wuhai'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mianyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Luzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zunyi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shizuishan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Neijiang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tongliao'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tieling'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Wafangdian'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Anqing'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shaoyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Laiwu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Chengde'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tianshui'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nanyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cangzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yibin'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Huaiyin'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dunhua'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yanji'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jiangmen'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tongling'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Suihua'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Gongziling'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xiantao'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Chaoyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ganzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Huzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Baicheng'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shangzi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yangjiang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Qitaihe'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Gejiu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jiangyin'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hebi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jiaxing'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Wuzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Meihekou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xuchang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Liaocheng'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Haicheng'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Qianjiang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Baiyin'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bei´an'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yixing'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Laizhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Qaramay'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Acheng'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dezhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nanping'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zhaoqing'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Beipiao'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Fengcheng'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Fuyu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xinyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dongtai'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yuci'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Honghu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ezhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Heze'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Daxian'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Linfen'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tianmen'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yiyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Quanzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Rizhao'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Deyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Guangyuan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Changshu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zhangzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hailar'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nanchong'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jiutai'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zhaodong'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shaoxing'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Fuyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Maoming'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Qujing'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ghulja'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jiaohe'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Puyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Huadian'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jiangyou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Qashqar'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Anshun'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Fuling'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xinyu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hanzhong'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Danyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Chenzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xiaogan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shangqiu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zhuhai'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Qingyuan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Aqsu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jining'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xiaoshan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zaoyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xinghua'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hami'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Huizhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jinmen'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sanming'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ulanhot'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Korla'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Wanxian'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Rui´an'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zhoushan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Liangcheng'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jiaozhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Taizhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Suzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yichun'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Taonan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pingdu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ji´an'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Longkou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Langfang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zhoukou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Suining'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yulin'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jinhua'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Liu´an'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shuangcheng'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Suizhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ankang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Weinan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Longjing'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Da´an'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Lengshuijiang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Laiyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xianning'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dali'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Anda'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jincheng'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Longyan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xichang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Wendeng'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hailun'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Binzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Linhe'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Wuwei'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Duyun'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mishan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shangrao'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Changji'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Meixian'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yushu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tiefa'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Huai´an'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Leiyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zalantun'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Weihai'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Loudi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Qingzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Qidong'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Huaihua'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Luohe'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Chuzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kaiyuan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Linqing'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Chaohu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Laohekou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dujiangyan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zhumadian'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Linchuan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jiaonan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sanmenxia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Heyuan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Manzhouli'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Lhasa'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Lianyuan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kuytun'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Puqi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hongjiang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Qinzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Renqiu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yuyao'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Guigang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kaili'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yan´an'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Beihai'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xuangzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Quzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yong´an'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zixing'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Liyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yizheng'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yumen'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Liling'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yuncheng'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shanwei'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cixi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yuanjiang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bozhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jinchang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Fu´an'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Suqian'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shishou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hengshui'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Danjiangkou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Fujin'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sanya'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Guangshui'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Huangshan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xingcheng'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zhucheng'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kunshan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Haining'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pingliang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Fuqing'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xinzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jieyang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Zhangjiagang'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tong Xian'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ya´an'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Jinzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Emeishan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Enshi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bose'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yuzhou'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kaiyuan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tumen'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Putian'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Linhai'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Xilin Hot'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Shaowu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Junan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Huaying'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pingyi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Huangyan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Abidjan'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bouaké'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yamoussoukro'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Daloa'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Korhogo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Douala'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Yaoundé'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Garoua'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Maroua'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bamenda'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bafoussam'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nkongsamba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kinshasa'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Lubumbashi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mbuji-Mayi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kolwezi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kisangani'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kananga'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Likasi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bukavu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kikwit'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tshikapa'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Matadi'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mbandaka'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mwene-Ditu'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Boma'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Uvira'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Butembo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Goma'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Kalemie'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Brazzaville'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pointe-Noire'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Avarua'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santafé de Bogotá'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cali'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Medellín'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Barranquilla'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cartagena'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cúcuta'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bucaramanga'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ibagué'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pereira'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santa Marta'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Manizales'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bello'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pasto'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Neiva'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Soledad'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Armenia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Villavicencio'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Soacha'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Valledupar'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Montería'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Itagüí'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Palmira'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Buenaventura'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Floridablanca'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sincelejo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Popayán'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Barrancabermeja'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dos Quebradas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tuluá'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Envigado'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cartago'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Girardot'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Buga'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Tunja'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Florencia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Maicao'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sogamoso'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Giron'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Moroni'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Praia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'San José'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'La Habana'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santiago de Cuba'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Camagüey'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Holguín'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Santa Clara'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Guantánamo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pinar del Río'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bayamo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Cienfuegos'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Victoria de las Tunas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Matanzas'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Manzanillo'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Sancti-Spíritus'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ciego de Ávila'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Flying Fish Cove'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'George Town'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nicosia'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Limassol'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Praha'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Brno'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ostrava'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Plzen'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Olomouc'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Liberec'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ceské Budejovice'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hradec Králové'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Ústí nad Labem'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Pardubice'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Berlin'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hamburg'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Munich [München]'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Köln'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Frankfurt am Main'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Essen'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dortmund'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Stuttgart'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Düsseldorf'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bremen'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Duisburg'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Hannover'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Leipzig'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Nürnberg'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Dresden'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bochum'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Wuppertal'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bielefeld'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mannheim'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Bonn'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Gelsenkirchen'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Karlsruhe'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Wiesbaden'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Münster'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Mönchengladbach'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Chemnitz'
+Warning (code 1292): Truncated incorrect DOUBLE value: 'Augsburg'
+ MySQL  localhost:3306 ssl  world  SQL > SELECT a.name, count(*) as total
+                                      -> FROM country a
+                                      -> INNER JOIN city b
+                                      -> on a.code = b.countrycode
+                                      -> GROUP BY a.code;
++---------------------------------------+-------+
+| name                                  | total |
++---------------------------------------+-------+
+| Aruba                                 |     1 |
+| Afghanistan                           |     4 |
+| Angola                                |     5 |
+| Anguilla                              |     2 |
+| Albania                               |     1 |
+| Andorra                               |     1 |
+| Netherlands Antilles                  |     1 |
+| United Arab Emirates                  |     5 |
+| Argentina                             |    57 |
+| Armenia                               |     3 |
+| American Samoa                        |     2 |
+| Antigua and Barbuda                   |     1 |
+| Australia                             |    14 |
+| Austria                               |     6 |
+| Azerbaijan                            |     4 |
+| Burundi                               |     1 |
+| Belgium                               |     9 |
+| Benin                                 |     4 |
+| Burkina Faso                          |     3 |
+| Bangladesh                            |    24 |
+| Bulgaria                              |    10 |
+| Bahrain                               |     1 |
+| Bahamas                               |     1 |
+| Bosnia and Herzegovina                |     3 |
+| Belarus                               |    16 |
+| Belize                                |     2 |
+| Bermuda                               |     2 |
+| Bolivia                               |     8 |
+| Brazil                                |   250 |
+| Barbados                              |     1 |
+| Brunei                                |     1 |
+| Bhutan                                |     1 |
+| Botswana                              |     2 |
+| Central African Republic              |     1 |
+| Canada                                |    49 |
+| Cocos (Keeling) Islands               |     2 |
+| Switzerland                           |     5 |
+| Chile                                 |    29 |
+| China                                 |   363 |
+| Côte d’Ivoire                         |     5 |
+| Cameroon                              |     7 |
+| Congo, The Democratic Republic of the |    18 |
+| Congo                                 |     2 |
+| Cook Islands                          |     1 |
+| Colombia                              |    38 |
+| Comoros                               |     1 |
+| Cape Verde                            |     1 |
+| Costa Rica                            |     1 |
+| Cuba                                  |    14 |
+| Christmas Island                      |     1 |
+| Cayman Islands                        |     1 |
+| Cyprus                                |     2 |
+| Czech Republic                        |    10 |
+| Germany                               |    93 |
+| Djibouti                              |     1 |
+| Dominica                              |     1 |
+| Denmark                               |     5 |
+| Dominican Republic                    |     6 |
+| Algeria                               |    18 |
+| Ecuador                               |    15 |
+| Egypt                                 |    37 |
+| Eritrea                               |     1 |
+| Western Sahara                        |     1 |
+| Spain                                 |    59 |
+| Estonia                               |     2 |
+| Ethiopia                              |     7 |
+| Finland                               |     7 |
+| Fiji Islands                          |     1 |
+| Falkland Islands                      |     1 |
+| France                                |    40 |
+| Faroe Islands                         |     1 |
+| Micronesia, Federated States of       |     2 |
+| Gabon                                 |     1 |
+| United Kingdom                        |    81 |
+| Georgia                               |     5 |
+| Ghana                                 |     5 |
+| Gibraltar                             |     1 |
+| Guinea                                |     1 |
+| Guadeloupe                            |     2 |
+| Gambia                                |     2 |
+| Guinea-Bissau                         |     1 |
+| Equatorial Guinea                     |     1 |
+| Greece                                |     8 |
+| Grenada                               |     1 |
+| Greenland                             |     1 |
+| Guatemala                             |     4 |
+| French Guiana                         |     1 |
+| Guam                                  |     2 |
+| Guyana                                |     1 |
+| Hong Kong                             |     2 |
+| Honduras                              |     3 |
+| Croatia                               |     4 |
+| Haiti                                 |     4 |
+| Hungary                               |     9 |
+| Indonesia                             |    85 |
+| India                                 |   341 |
+| Ireland                               |     2 |
+| Iran                                  |    67 |
+| Iraq                                  |    15 |
+| Iceland                               |     1 |
+| Israel                                |    14 |
+| Italy                                 |    58 |
+| Jamaica                               |     3 |
+| Jordan                                |     5 |
+| Japan                                 |   248 |
+| Kazakstan                             |    21 |
+| Kenya                                 |     8 |
+| Kyrgyzstan                            |     2 |
+| Cambodia                              |     3 |
+| Kiribati                              |     2 |
+| Saint Kitts and Nevis                 |     1 |
+| South Korea                           |    70 |
+| Kuwait                                |     3 |
+| Laos                                  |     2 |
+| Lebanon                               |     2 |
+| Liberia                               |     1 |
+| Libyan Arab Jamahiriya                |     4 |
+| Saint Lucia                           |     1 |
+| Liechtenstein                         |     2 |
+| Sri Lanka                             |     7 |
+| Lesotho                               |     1 |
+| Lithuania                             |     5 |
+| Luxembourg                            |     1 |
+| Latvia                                |     3 |
+| Macao                                 |     1 |
+| Morocco                               |    22 |
+| Monaco                                |     2 |
+| Moldova                               |     4 |
+| Madagascar                            |     5 |
+| Maldives                              |     1 |
+| Mexico                                |   173 |
+| Marshall Islands                      |     1 |
+| Macedonia                             |     1 |
+| Mali                                  |     1 |
+| Malta                                 |     2 |
+| Myanmar                               |    16 |
+| Mongolia                              |     1 |
+| Northern Mariana Islands              |     1 |
+| Mozambique                            |    12 |
+| Mauritania                            |     2 |
+| Montserrat                            |     1 |
+| Martinique                            |     1 |
+| Mauritius                             |     3 |
+| Malawi                                |     2 |
+| Malaysia                              |    18 |
+| Mayotte                               |     1 |
+| Namibia                               |     1 |
+| New Caledonia                         |     1 |
+| Niger                                 |     3 |
+| Norfolk Island                        |     1 |
+| Nigeria                               |    64 |
+| Nicaragua                             |     4 |
+| Niue                                  |     1 |
+| Netherlands                           |    28 |
+| Norway                                |     5 |
+| Nepal                                 |     5 |
+| Nauru                                 |     2 |
+| New Zealand                           |     9 |
+| Oman                                  |     5 |
+| Pakistan                              |    59 |
+| Panama                                |     2 |
+| Pitcairn                              |     1 |
+| Peru                                  |    22 |
+| Philippines                           |   136 |
+| Palau                                 |     1 |
+| Papua New Guinea                      |     1 |
+| Poland                                |    44 |
+| Puerto Rico                           |     9 |
+| North Korea                           |    13 |
+| Portugal                              |     5 |
+| Paraguay                              |     5 |
+| Palestine                             |     6 |
+| French Polynesia                      |     2 |
+| Qatar                                 |     1 |
+| Réunion                               |     1 |
+| Romania                               |    29 |
+| Russian Federation                    |   189 |
+| Rwanda                                |     1 |
+| Saudi Arabia                          |    24 |
+| Sudan                                 |    12 |
+| Senegal                               |     9 |
+| Singapore                             |     1 |
+| Saint Helena                          |     1 |
+| Svalbard and Jan Mayen                |     1 |
+| Solomon Islands                       |     1 |
+| Sierra Leone                          |     1 |
+| El Salvador                           |     7 |
+| San Marino                            |     2 |
+| Somalia                               |     3 |
+| Saint Pierre and Miquelon             |     1 |
+| Sao Tome and Principe                 |     1 |
+| Suriname                              |     1 |
+| Slovakia                              |     3 |
+| Slovenia                              |     2 |
+| Sweden                                |    15 |
+| Swaziland                             |     1 |
+| Seychelles                            |     1 |
+| Syria                                 |    11 |
+| Turks and Caicos Islands              |     1 |
+| Chad                                  |     2 |
+| Togo                                  |     1 |
+| Thailand                              |    12 |
+| Tajikistan                            |     2 |
+| Tokelau                               |     1 |
+| Turkmenistan                          |     4 |
+| East Timor                            |     1 |
+| Tonga                                 |     1 |
+| Trinidad and Tobago                   |     2 |
+| Tunisia                               |     8 |
+| Turkey                                |    62 |
+| Tuvalu                                |     1 |
+| Taiwan                                |    42 |
+| Tanzania                              |    10 |
+| Uganda                                |     1 |
+| Ukraine                               |    57 |
+| Uruguay                               |     1 |
+| United States                         |   274 |
+| Uzbekistan                            |    17 |
+| Holy See (Vatican City State)         |     1 |
+| Saint Vincent and the Grenadines      |     1 |
+| Venezuela                             |    41 |
+| Virgin Islands, British               |     1 |
+| Virgin Islands, U.S.                  |     1 |
+| Vietnam                               |    22 |
+| Vanuatu                               |     1 |
+| Wallis and Futuna                     |     1 |
+| Samoa                                 |     1 |
+| Yemen                                 |     6 |
+| Yugoslavia                            |     8 |
+| South Africa                          |    44 |
+| Zambia                                |     7 |
+| Zimbabwe                              |     6 |
++---------------------------------------+-------+
+232 rows in set (0.0324 sec)
+ MySQL  localhost:3306 ssl  world  SQL > SELECT a.name, count(*) as total FROM country a INNER JOIN city b on a.code = b.countrycode GROUP BY a.code
+                                      -> ORDER BY count(*) asc limit 1;
++-------+-------+
+| name  | total |
++-------+-------+
+| Aruba |     1 |
++-------+-------+
+1 row in set (0.0307 sec)
+ MySQL  localhost:3306 ssl  world  SQL > SELECT a.name, count(*) as total FROM country a INNER JOIN city b on a.code = b.countrycode GROUP BY a.code  ORDER BY count(*) desc limit 1;
++-------+-------+
+| name  | total |
++-------+-------+
+| China |   363 |
++-------+-------+
+1 row in set (0.0302 sec)
+ MySQL  localhost:3306 ssl  world  SQL >
